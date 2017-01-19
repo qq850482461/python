@@ -54,10 +54,16 @@ class App():
             os.chdir(name)
 
     #显示下载速度的回调函数
-    def report(self,count, blockSize, totalSize):
-        percent = int(count * blockSize * 100 / totalSize)
-        sys.stdout.write("\r%d%%" % percent + ' complete')
-        sys.stdout.flush()
+    def callbackfunc(self,blocknum, blocksize, totalsize):
+        '''回调函数
+        @blocknum: 已经下载的数据块
+        @blocksize: 数据块的大小
+        @totalsize: 远程文件的大小
+        '''
+        percent = 100.0 * blocknum * blocksize / totalsize
+        if percent > 100:
+            percent = 100
+        print("%.2f%%" % percent)
 
 
     #工作内容
@@ -76,7 +82,7 @@ class App():
                     print("正在下载",name)
                     #print(data)    '''
                     #time.sleep(1)
-                    urllib.request.urlretrieve(url=data,filename=name,reporthook=self.report)
+                    urllib.request.urlretrieve(url=data,filename=name,reporthook=self.callbackfunc)
                 except Exception as e:
                    print("出错了",e)
             else:
