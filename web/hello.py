@@ -42,12 +42,12 @@ def login():
 
     return render_template('login.html',method=request.method)
 
-@app.route('/upload',methods=['GET','POST'])
+@app.route('/upload',methods=['GET','POST'])#上传文件
 def upload():
     if request.method=='POST':
         f = request.files['file']
         basepath = path.abspath(path.dirname(__file__))
-        upload_path = path.join(basepath, 'static/uploads/')
+        upload_path = path.join(basepath, 'static/uploads/')#上传到的路径
         f.save(upload_path+secure_filename(f.filename))
         return redirect(url_for('upload'))
     return render_template('upload.html')
