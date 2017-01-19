@@ -1,0 +1,6 @@
+# Netscape HTTP Cookie File
+# http://curl.haxx.se/rfc/cookie_spec.html
+# This is a generated file!  Do not edit.
+
+.juhe.cn	TRUE	/	FALSE		PHPSESSID	lpspnuhiod06l924t6v5a89jp1
+www.juhe.cn	FALSE	/	FALSE	1484881162	hasReg	reged

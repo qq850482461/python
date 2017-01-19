@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+    <!--静态文件引用第一参数是static,然后是文件名字-->
+    <link rel="stylesheet" href="{{url_for('static',filename='static.css')}}">
+</head>
+<body>
+<!--调用的函数名称必须用｛｛函数名称｝｝-->
+<h1>你的名字{{name}}</h1>
+<nav>
+    <!--用模版的超连接可以只用用引入的方式 .代表python包的位置 about对应的是函数-->
+    <a href="{{url_for('.about')}}">about</a>
+</nav>
+
+</body>
+</html>
