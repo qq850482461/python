@@ -20,7 +20,7 @@ def read_md(filename):
     #重点：不管是写入还是读取出现编码错误就在open函数添加encodeing
     with open(filename,encoding='utf-8') as f:
         content = reduce(lambda x, y: x + y, f.readlines())
-        return content#.decode("utf-8")
+        return content
 
 #上下文处理器函数
 @app.context_processor
