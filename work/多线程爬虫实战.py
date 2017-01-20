@@ -95,7 +95,7 @@ class App():
         for i in self.jpglist(url):  # 装载Q队列
             self.q.put(i)
         threads = []
-        for i in range(1):
+        for i in range(4):
             i = threading.Thread(target=self.work,args=(url,))
             i.setDaemon(True)
             i.start()

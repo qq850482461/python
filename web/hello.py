@@ -2,6 +2,7 @@ from flask import Flask,render_template,request,redirect,url_for
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
 from os import path
+
 class RegexConverter(BaseConverter):#正则转换器
     def __init__(self,url_map,*items):
         super(RegexConverter,self).__init__(url_map)
@@ -9,6 +10,7 @@ class RegexConverter(BaseConverter):#正则转换器
 
 app = Flask(__name__)
 app.url_map.converters['regex'] = RegexConverter#正则转换器
+
 @app.route('/')#装饰起用于 根目录
 def index():
     return '<h1>这是主页</h1>'
