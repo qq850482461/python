@@ -7,9 +7,22 @@
 <body>
 <!--关闭转义功能（开启是防止xss攻击防止传入脚本到页面）-->
 {#{% autoescape false %}#}
-{{ title|safe }}
+
+{#{{ title|safe }}#}
 {{ body|md|safe }}
 {{ read_md('http_methods.md')|md|safe }}
+
 {#{% endautoescape %}#}
+<!--jinja2语法,这里的url_for只能获得动态的函数页面-->
+
+{% set links=[{'label':'about','href':url_for('.index')},{'label':'test','href':url_for('.test')}] %}
+
+<nav>
+    {% for link in links %}
+        {% if not loop.first %} | {% endif %}
+        <a href="{{ link.href }}">{{ link.label }}</a>
+    {% endfor %}
+</nav>
+
 </body>
 </html>
