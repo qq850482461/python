@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+<!--关闭转义功能（开启是防止xss攻击防止传入脚本到页面）-->
+{#{% autoescape false %}#}
+
+{#{{ title|safe }}#}
+{{ body|md|safe }}
+{{ read_md('http_methods.md')|md|safe }}
+
+{#{% endautoescape %}#}
+</body>
+</html>

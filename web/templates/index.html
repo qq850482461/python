@@ -1,28 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ title }}</title>
-</head>
-<body>
-<!--关闭转义功能（开启是防止xss攻击防止传入脚本到页面）-->
-{#{% autoescape false %}#}
+{% extends 'base.html' %}
+<!--定义一个宏,导入宏然后给一个别名-->
+{% import 'includes/_macro.html' as ui %}
 
-{#{{ title|safe }}#}
-{{ body|md|safe }}
-{{ read_md('http_methods.md')|md|safe }}
+{% block title %}{{ title }}{% endblock title %}
 
-{#{% endautoescape %}#}
-<!--jinja2语法,这里的url_for只能获得动态的函数页面-->
+{% block content %}
+    <div class="page-header">
+        <div class="container">
+             <h1>{{ self.title() }}</h1>
+        </div>
+    </div>
+    <div class="container">
+        {{ ui.input('username') }}
+        {{ ui.input('password',type='password') }}
+    </div>
+{% endblock content %}
 
-{% set links=[{'label':'about','href':url_for('.index')},{'label':'test','href':url_for('.test')}] %}
+{% block footer %}
 
-<nav>
-    {% for link in links %}
-        {% if not loop.first %} | {% endif %}
-        <a href="{{ link.href }}">{{ link.label }}</a>
-    {% endfor %}
-</nav>
-
-</body>
-</html>
+{% endblock footer%}

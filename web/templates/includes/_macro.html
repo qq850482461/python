@@ -1,0 +1,8 @@
+<!--定义一个宏-->
+{% macro input(name,value='',type='text',size=20) %}
+    <input type="{{ type }}"
+           name='{{ name }}'
+           value='{{ value }}'
+           size="{{ size }}"
+    />
+{% endmacro %}

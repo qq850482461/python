@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html',title="<h1>Hello world!!</h1>",body="##header2##")
+    return render_template('demo.html',title="这是函数传入的title",body="<h1>函数传入的body</h1>")
 
 #自己定义一个jinja2的过滤器
 @app.template_filter('md')

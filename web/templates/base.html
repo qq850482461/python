@@ -1,0 +1,29 @@
+{% extends 'bootstrap/base.html' %}
+
+{% block head %}
+    {{ super() }}
+    <!--这里使用include的方式加入head->
+    {% include 'includes/_head.html' %}
+{% endblock head %}
+<!--重写styles样式更换主题http://bootswatch.com/-->
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" type="text/css" href="http://bootswatch.com/cerulean/bootstrap.min.css">
+{% endblock styles %}
+<!--这里是bar导航-->
+{% block navbar %}
+    <!--使用对象的方式直接写入-->
+    {{ nav.top.render() }}
+{% endblock navbar %}
+
+{% block content %}
+    <header>{% block header %}{% endblock %}</header>
+{% endblock content %}
+
+
+{% block footer %}
+    <footer>
+        Copyright 2017 by <a href="https://github.com/qq850482461">lzh</a>
+    </footer>
+{% endblock footer %}
+

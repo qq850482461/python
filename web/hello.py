@@ -2,8 +2,9 @@ from flask import Flask,render_template,request,redirect,url_for,make_response,a
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
 from os import path
-
-
+from flask_bootstrap import Bootstrap
+from flask_nav import Nav
+from flask_nav.elements import *
 
 class RegexConverter(BaseConverter):#正则转换器
     def __init__(self,url_map,*items):
@@ -12,12 +13,15 @@ class RegexConverter(BaseConverter):#正则转换器
 
 app = Flask(__name__)
 app.url_map.converters['regex'] = RegexConverter#正则转换器
-
-
+Bootstrap(app)#实例化Bootstrap
+nav = Nav()#实例化Nav
+#创建一个导航对象
+nav.register_element('top',Navbar('Flask入门',View('主页','index'), View('关于','about'),View('项目','projects')))
+nav.init_app(app)#放入flask对象中
 
 @app.route('/')#装饰起用于根目录
 def index():
-    response = make_response('<h1>这是主页,没错!</h1>')
+    response = make_response(render_template('index.html',title='Welcome'))
     response.set_cookie('username','')#cookie
     return response
 
