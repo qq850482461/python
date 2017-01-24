@@ -6,10 +6,11 @@ from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import *
 from flask_sqlalchemy import SQLAlchemy
-#登录需要的包
+#登录页面过滤需要的包
 from flask_wtf import Form
 from  wtforms import PasswordField,StringField,SubmitField
 from  wtforms.validators import DataRequired
+
 #登录模块
 class LoginForm(Form):
     username=StringField(label='帐号',validators=[DataRequired()])

@@ -1,8 +1,7 @@
 {% extends 'bootstrap/base.html' %}
-
+<!--这里使用include的方式加入head->
 {% block head %}
     {{ super() }}
-    <!--这里使用include的方式加入head->
     {% include 'includes/_head.html' %}
 {% endblock head %}
 <!--重写styles样式更换主题http://bootswatch.com/-->
@@ -10,6 +9,7 @@
     {{ super() }}
     <link rel="stylesheet" type="text/css" href="http://bootswatch.com/cerulean/bootstrap.min.css">
 {% endblock styles %}
+
 <!--这里是bar导航-->
 {% block navbar %}
     <!--使用对象的方式直接写入-->
@@ -17,13 +17,17 @@
 {% endblock navbar %}
 
 {% block content %}
-    <header>{% block header %}{% endblock %}</header>
+    {#    <header>{% block header %}{% endblock %}</header>#}
 {% endblock content %}
 
+{% block body %}
+    {{ super() }}
 
-{% block footer %}
-    <footer class="footer">
-        ©Copyright 2017 by <a href="https://github.com/qq850482461">lzh</a>
+    <footer class="navbar navbar-default navbar-fixed-bottom">
+        <div class="navbar-inner navbar-content-center">
+            <p class="container" style="padding: 10px;color: black">
+                ©Copyright 2017 by <a style="color: black" href="https://github.com/qq850482461">lzh</a>
+            </p>
+        </div>
     </footer>
-{% endblock footer %}
-
+{% endblock body %}
