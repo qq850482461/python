@@ -1,23 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>登录</title>
-</head>
-<body>
-
-<h1>Http方法:{{method}}</h1>
-<form method="post">
-    <div>
-        <input type="text" name="username" placeholder="帐号"/>
+{% extends 'base.html' %}
+<!--导入bootstrap的宏登录-->
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block content %}
+    <div class="page-header">
+        <div class="container">
+            <h1>{{ self.title() }}</h1>
+        </div>
     </div>
-    <div>
-        <input type="password" name="password" placeholder="密码"/>
+    <div class="container">
+        <!--flah的消息都在get_flashed_messages的对象中-->
+        {% for message in get_flashed_messages() %}
+            <!--alert-info是bootstrap消息输出-->
+            <div class="alert-info">{{ message }}</div>
+        {% endfor %}
+        <!--用wtf.quick_form快速创建form表单-->
+        {{ wtf.quick_form(form) }}
     </div>
-
-    <input type="submit" value="提交！">
-</form>
-
-
-</body>
-</html>
+{% endblock content %}

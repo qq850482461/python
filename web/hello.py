@@ -1,11 +1,21 @@
-from flask import Flask,render_template,request,redirect,url_for,make_response,abort
+from flask import Flask,render_template,request,redirect,url_for,make_response,abort,flash
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
 from os import path
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import *
-
+from flask_sqlalchemy import SQLAlchemy
+#登录需要的包
+from flask_wtf import Form
+from  wtforms import PasswordField,StringField,SubmitField
+from  wtforms.validators import DataRequired
+#登录模块
+class LoginForm(Form):
+    username=StringField(label='帐号',validators=[DataRequired()])
+    password=PasswordField(label='密码',validators=[DataRequired()])
+    submit = SubmitField(label='提交')
+#正则表达式
 class RegexConverter(BaseConverter):#正则转换器
     def __init__(self,url_map,*items):
         super(RegexConverter,self).__init__(url_map)
@@ -15,8 +25,9 @@ app = Flask(__name__)
 app.url_map.converters['regex'] = RegexConverter#正则转换器
 Bootstrap(app)#实例化Bootstrap
 nav = Nav()#实例化Nav
+app.config.from_pyfile('config')
 #创建一个导航对象
-nav.register_element('top',Navbar('Flask入门',View('主页','index'), View('关于','about'),View('项目','projects')))
+nav.register_element('top',Navbar('Flask入门',View('主页','index'), View('登录','login'),View('关于','about'),View('项目','projects')))
 nav.init_app(app)#放入flask对象中
 
 @app.route('/')#装饰起用于根目录
@@ -46,13 +57,15 @@ def projects():
 
 @app.route('/login',methods=['GET','POST'])#http方法
 def login():
-    if request.method == 'POST':
-        username = request.form['username']#对应的是login的name标签获取里面的内容
-        password = request.form['password']
-        print(username,password)#获取前端post传过来的参数可以进行一些验证处理等
-    # else:#如果是用get方法就用这个方法获取前端穿进来的数据
-    #     username = request.args['username']
-    return render_template('login.html',method=request.method)
+    # if request.method == 'POST':
+    #     username = request.form['username']#对应的是login的name标签获取里面的内容
+    #     password = request.form['password']
+    #     print(username,password)#获取前端post传过来的参数可以进行一些验证处理等
+    # # else:#如果是用get方法就用这个方法获取前端穿进来的数据
+    # #     username = request.args['username']
+    form = LoginForm()
+    flash('登录成功')
+    return render_template('login.html',title='登录',form=form)
 
 @app.route('/upload',methods=['GET','POST'])#上传文件的http方法
 def upload():
