@@ -28,7 +28,7 @@ Bootstrap(app)#实例化Bootstrap
 nav = Nav()#实例化Nav
 app.config.from_pyfile('config')
 #创建一个导航对象
-nav.register_element('top',Navbar('Flask入门',View('主页','index'), View('登录','login'),View('关于','about'),View('项目','projects')))
+nav.register_element('top',Navbar('Flask入门',View('主页','index'), View('登录','login'),View('上传','upload'),View('关于','about')))
 nav.init_app(app)#放入flask对象中
 
 @app.route('/')#装饰起用于根目录
@@ -49,7 +49,7 @@ def user(user_id):
 
 @app.route('/about')
 def about():
-    return "about"
+    return render_template('about.html')
 
 @app.route('/projects/')
 @app.route('/our-works/')#多个url匹配同一个视图函数
