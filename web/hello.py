@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,redirect,url_for,make_response,abort,flash
+from flask import Flask,render_template,request,redirect,url_for,make_response,abort,flash,session
 from werkzeug.routing import BaseConverter
 from werkzeug.utils import secure_filename
 from os import path
@@ -7,15 +7,9 @@ from flask_nav import Nav
 from flask_nav.elements import *
 from flask_sqlalchemy import SQLAlchemy
 #登录页面过滤需要的包
-from flask_wtf import Form
-from  wtforms import PasswordField,StringField,SubmitField
-from  wtforms.validators import DataRequired
+from web.forms import LoginForm
 
-#登录模块
-class LoginForm(Form):
-    username=StringField(label='帐号',validators=[DataRequired()])
-    password=PasswordField(label='密码',validators=[DataRequired()])
-    submit = SubmitField(label='提交')
+
 #正则表达式
 class RegexConverter(BaseConverter):#正则转换器
     def __init__(self,url_map,*items):
@@ -65,8 +59,14 @@ def login():
     # # else:#如果是用get方法就用这个方法获取前端穿进来的数据
     # #     username = request.args['username']
     form = LoginForm()
-    flash('登录成功')
-    return render_template('login.html',title='登录',form=form)
+    username = None
+    if form.validate_on_submit():#第一次访问服务器会收到一个没有表单数据的get请求所以这里会变成false，表单数据通过验证就会返回true
+        session['username'] = form.username.data#
+        username = session.get('username')
+        flash('登录成功',username)
+        print(username,type(username))
+        return redirect(url_for('login'))
+    return render_template('login.html',title='登录',form=form,name=username)
 
 @app.route('/upload',methods=['GET','POST'])#上传文件的http方法
 def upload():

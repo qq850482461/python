@@ -4,7 +4,7 @@
 {% block content %}
     <div class="page-header">
         <div class="container">
-            <h1>{{ self.title() }}</h1>
+            <h1>Hello,{% if name %}{{ name }}{% else %}陌生人{% endif %}</h1>
         </div>
     </div>
     <div class="container">

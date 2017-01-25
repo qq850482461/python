@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 from flask_script import Manager
 from flask import Flask,render_template
 from markdown import markdown #自定义jinja2过滤器
