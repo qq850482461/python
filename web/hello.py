@@ -9,7 +9,6 @@ from flask_sqlalchemy import SQLAlchemy
 #登录页面过滤需要的包
 from web.forms import LoginForm
 
-
 #正则表达式
 class RegexConverter(BaseConverter):#正则转换器
     def __init__(self,url_map,*items):
@@ -18,12 +17,42 @@ class RegexConverter(BaseConverter):#正则转换器
 
 app = Flask(__name__)
 app.url_map.converters['regex'] = RegexConverter#正则转换器
+
 Bootstrap(app)#实例化Bootstrap
 nav = Nav()#实例化Nav
+
 app.config.from_pyfile('config')
+
 #创建一个导航对象
 nav.register_element('top',Navbar('Flask入门',View('主页','index'), View('登录','login'),View('上传','upload'),View('关于','about')))
 nav.init_app(app)#放入flask对象中
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:lzh3101977@localhost:3306/test'
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    username = db.Column(db.String)
+
+    def __init__(self,id,username):
+        self.id = id
+        self.username =username
+
+    def __repr__(self):
+        return '%r' % self.id
+def save():
+    user = User(4,'3test')
+    db.session.add(user)
+    db.session.commit()
+
+def query():
+    user = User.query.all()
+    for u in user:
+        print(u)
+        print(type(u))
+        print(type(user))
 
 @app.route('/')#装饰起用于根目录
 def index():
@@ -61,10 +90,13 @@ def login():
     form = LoginForm()
     username = None
     if form.validate_on_submit():#第一次访问服务器会收到一个没有表单数据的get请求所以这里会变成false，表单数据通过验证就会返回true
-        session['username'] = form.username.data#
+        session['username'] = form.username.data
         username = session.get('username')
-        flash('登录成功',username)
-        print(username,type(username))
+        session['password'] = form.password.data
+        password = session.get('password')
+        flash('登录成功')
+        print(username,password,type(username))
+        save()
         return redirect(url_for('login'))
     return render_template('login.html',title='登录',form=form,name=username)
 
@@ -85,5 +117,4 @@ def page_not_found(error):
 
 
 if __name__ == '__main__':
-
     app.run(port=80,debug = True)
