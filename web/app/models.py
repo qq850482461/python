@@ -1,26 +1,16 @@
 from . import db
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String)
+    __tablename__ ='users'
+    id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    username = db.Column(db.String(80),unique=True)
+    password = db.Column(db.String(32),nullable=False)
 
-    def __init__(self, id, username):
-        self.id = id
+    def __init__(self,username,password):
         self.username = username
+        self.password = password
 
     def __repr__(self):
-        return '%r' % self.id
+        return '%r' % self.username
 
 
-def save():
-    user = User(4, '3test')
-    db.session.add(user)
-    db.session.commit()
-
-
-def query():
-    user = User.query.all()
-    for u in user:
-        print(u)
-        print(type(u))
-        print(type(user))
 

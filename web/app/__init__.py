@@ -1,13 +1,11 @@
 from flask import Flask
-from werkzeug.routing import BaseConverter
-from werkzeug.utils import secure_filename
 from flask_bootstrap import Bootstrap
 from flask_nav import Nav
 from flask_nav.elements import *
 from flask_sqlalchemy import SQLAlchemy
-# 登录页面过滤需要的包
+from werkzeug.routing import BaseConverter
 
-from .views import init_views
+
 
 # 正则表达式
 class RegexConverter(BaseConverter):  # 正则转换器
@@ -29,11 +27,14 @@ def create_app():
     app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
     # 创建一个导航对象
-    nav.register_element('top', Navbar('Flask入门', View('主页', 'index'), View('登录', 'login'), View('上传', 'upload'),View('关于', 'about')))
+    nav.register_element('top', Navbar('Flask入门', View('主页', 'main.index'), View('登录', 'auth.login'), View('上传', 'main.upload'),View('关于', 'main.about')))
     nav.init_app(app)  # 放入flask对象中
     bootstrap.init_app(app)
     db.init_app(app)
-    init_views(app)
+    from .auth import auth as auth_blueprint
+    from .main import main as main_blueprint
+    app.register_blueprint(auth_blueprint)#注册蓝图,url_prefix='/auth'
+    app.register_blueprint(main_blueprint,static_folder='static')#定义静态文件目空了
     return app
 
 
