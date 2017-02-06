@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, make_response, flash, session
 from . import auth #这里用.代表当前包的__init__
-from .forms import LoginForm
+from .forms import LoginForm,RegisterForm
 
 
 @auth.route('/login', methods=['GET', 'POST'])  # http方法
@@ -21,5 +21,13 @@ def login():
         flash('登录成功')
         print(username, password, type(username))
 
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
     return render_template('login.html', title='登录', form=form, name=username)
+
+@auth.route('/register', methods=['GET','POST'])
+def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        flash('test')
+        return redirect(url_for('auth.register'))
+    return render_template('register.html',title='注册',form=form)

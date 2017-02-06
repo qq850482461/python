@@ -8,9 +8,9 @@ def index():
     return render_template('index.html', title='Welcome')
     # return '测试'
 
-@main.route('/<name>')  # hello目录
-def hello(name):
-    return render_template('hello.html', name=name)
+# @main.route('/<name>')  # hello目录
+# def hello(name):
+#     return render_template('hello.html', name=name)
 
 
 @main.route('/user/<regex("[a-z]{3}"):user_id>')  # 正则表达式验证url
