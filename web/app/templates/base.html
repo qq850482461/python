@@ -13,7 +13,8 @@
 <!--这里是bar导航-->
 {% block navbar %}
     <!--使用对象的方式直接写入-->
-    {{ nav.top.render() }}
+{#    {{ nav.top.render() }}#}
+    {% include 'includes/_navbar.html' %}
 {% endblock navbar %}
 
 {% block content %}
