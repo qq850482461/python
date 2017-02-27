@@ -5,6 +5,7 @@ from flask_nav.elements import *
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.routing import BaseConverter
 from flask_login import LoginManager
+from flask_pagedown import PageDown
 
 
 # 正则表达式
@@ -17,6 +18,7 @@ class RegexConverter(BaseConverter):  # 正则转换器
 bootstrap = Bootstrap()  # 实例化Bootstrap
 nav = Nav()  # 实例化Nav
 db = SQLAlchemy()#数据库实例化
+pagedown = PageDown()#博客事实预览的pagedown
 login_manager = LoginManager() #实例化登录模块
 login_manager.session_protection = 'strong'
 login_manager.login_view = 'auth.login'#制定系统默认的登录页面
@@ -34,10 +36,11 @@ def create_app():
     bootstrap.init_app(app)
     db.init_app(app)
     login_manager.init_app(app)
+    pagedown.init_app(app)
     from .auth import auth as auth_blueprint
     from .main import main as main_blueprint
     app.register_blueprint(auth_blueprint)#注册蓝图,url_prefix='/auth'
-    app.register_blueprint(main_blueprint,static_folder='static')#定义静态文件目空了
+    app.register_blueprint(main_blueprint)#定义静态文件目空了,,static_folder='static'
     app.debug = True
     return app
 

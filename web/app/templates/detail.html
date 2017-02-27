@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+    <div class="container">
+        <span>作者{{ post.author.username }}</span> <span>日期：{{ post.created }}</span>
+        <!--正文-->
+        <div>
+            {{ post.title }}
+        </div>
+        <div>
+            {{ post.body_html | safe }}
+        </div>
+        <!--评论内容列表-->
+        <!--通过数据库模型posts中关联的comments得到评论对象进行for循环输出-->
+        {% for comment in post.comments %}
+            <div class="media">
+                <div class="media-body">
+                    <span>{{ comment.created }}</span>
+                    {{ comment.body }}
+                </div>
+            </div>
+        {% endfor %}
+
+        <!--发表评论-->
+        <h3>评论{{ time }}</h3>
+        <div>
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+{% endblock content %}

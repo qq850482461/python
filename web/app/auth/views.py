@@ -17,13 +17,18 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():  # 第一次访问服务器会收到一个没有表单数据的get请求所以这里会变成false，表单数据通过验证就会返回true
         user = User.query.filter_by(username=form.username.data,password=form.password.data).first()
-        print(user,type(user))
+        username = User.query.filter_by(username=form.username.data).first()
+        print(user,user.id)
         if user is not None:
             login_user(user)
             return redirect(url_for('main.index'))
+        elif username is None:
+            flash('{0}账户不存在'.format(form.username.data))
+        else:
+            flash("您输入的密码不正确")
     return render_template('login.html', title='登录', form=form)
 
-#等出页面
+#登出页面
 @auth.route('/logout')
 def logout():
     logout_user()
@@ -44,6 +49,6 @@ def register():
             return redirect(url_for('auth.register'))
         except:
             db.session.rollback()
-            flash('注册失败')
+            flash('{0}注册失败或帐号已经被注册'.format(form.username.data))
             return redirect(url_for('auth.register'))
     return render_template('register.html', title='注册', form=form)

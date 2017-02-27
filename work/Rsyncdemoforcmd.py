@@ -15,7 +15,7 @@ class App():
         path = askdirectory()
         self.v1.set(path)
 
-    def rsync(self,path,ip = "192.168.1.6",module = "backup",):
+    def rsync(self,path,ip = "192.168.1.71",module = "SaleBackup",):
       path = str(path)
       ip = str(ip)
       module = str(module)
