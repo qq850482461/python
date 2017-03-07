@@ -4,16 +4,26 @@
 
 {% block title %}{{ title }}{% endblock title %}
 
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+{% endblock %}
+
 {% block content %}
     <div class="page-header">
         <div class="container">
             <h1>{{ self.title() }}</h1>
+            <p>现在时间时: {{ moment(time).format('LLL') }}.</p>
+            <p>{{ moment().calendar() }}.</p>
         </div>
     </div>
-    <div class="container">
-        {{ ui.input('username') }}
-        {{ ui.input('password',type='password') }}
-    </div>
+
+    {#    <div class="container">#}
+    {#        {{ ui.input('username') }}#}
+    {#        {{ ui.input('password',type='password') }}#}
+    {##}
+    {#    </div>#}
+
 
 {% endblock content %}
 

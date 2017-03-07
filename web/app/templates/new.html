@@ -16,7 +16,7 @@
     </div>
     <div class="edit_article">
         <div class="col-md-6">
-            <form action="{{ url_for('main.new') }}" method="POST" class="form" role="form">
+            <form method="POST" class="form" role="form">
                 {# 防止表单跨域攻击 #}
                 {{ form.hidden_tag() }}
                 <div class="form-group">
