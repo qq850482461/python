@@ -1,37 +1,3 @@
-{#<div class="navbar navbar-default navbar-content-center " role="navigation">#}
-{#    <div class="navbar-header ">#}
-{#        <!-- .navbar-toggle样式用于toggle收缩的内容，即nav-collapse collapse样式所在元素 -->#}
-{#        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-responsive-collapse">#}
-{#            <span class="sr-only"></span>#}
-{#            <span class="icon-bar"></span>#}
-{#            <span class="icon-bar"></span>#}
-{#            <span class="icon-bar"></span>#}
-{#        </button>#}
-{#        <!-- 确保无论是宽屏还是窄屏，navbar-brand都显示 -->#}
-{#        <a href="##" class="navbar-brand">博客</a>#}
-{#    </div>#}
-{#    <!-- 屏幕宽度小于768px时，div.navbar-responsive-collapse容器里的内容都会隐藏，#}
-{#        显示icon-bar图标，当点击icon-bar图标时，再展开。屏幕大于768px时，默认显示。 -->#}
-{#    <div class="collapse navbar-collapse navbar-responsive-collapse">#}
-{#        <ul class="nav navbar-nav">#}
-{#            <li ><a href="{{ url_for('main.index') }}">首页</a></li>#}
-{#            <li><a href="{{ url_for('main.about') }}">文章</a></li>#}
-{#            <li><a href="{{ url_for('main.about') }}">关于</a></li>#}
-{#        </ul>#}
-{#        <ul class="nav navbar-nav navbar-right">#}
-{#            <!--###判断条件中的变量current_user由Flask-Login定义，且在视图函数和模板中自动调用。is_authenticated在python3是没有()括号-->#}
-{#            {% if current_user.is_authenticated %}#}
-{#                <!--current_user.username，username是取数据库中的名字也可以改成数据库中相对应的对象-->#}
-{#                <li><a href="#">{{ current_user.username }}</a></li>#}
-{#                <li><a href="{{ url_for('auth.logout') }}">退出 </a></li>#}
-{#            {% else %}#}
-{#                <li><a href="{{ url_for('auth.login') }}">登录</a></li>#}
-{#                <li><a href="{{ url_for('auth.register') }}">注册</a></li>#}
-{#            {% endif %}#}
-{#        </ul>#}
-{#    </div>#}
-{#</div>#}
-
 <nav class="navbar navbar-default navbar-content-center" role="navigation">
     <div class="container container-fluid">
         <div class="navbar-header">

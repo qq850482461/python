@@ -14,6 +14,11 @@ class RegexConverter(BaseConverter):  # 正则转换器
         super(RegexConverter, self).__init__(url_map)
         self.regex = items[0]
 
+#定义jinja2的过滤器函数
+def date_filter(s):
+    s = str(s)
+    time = s[:10]
+    return time
 
 bootstrap = Bootstrap()  # 实例化Bootstrap
 db = SQLAlchemy()#数据库实例化
@@ -43,6 +48,9 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(auth_blueprint)#注册蓝图,url_prefix='/auth'
     app.register_blueprint(main_blueprint)#定义静态文件目空了,,static_folder='static'
+
+    app.jinja_env.filters['date'] = date_filter #注册自己定义的过滤函数
+
     app.debug = True
     return app
 

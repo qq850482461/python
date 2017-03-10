@@ -4,30 +4,27 @@
     {{ super() }}
     {% include 'includes/_head.html' %}
 {% endblock head %}
-<!--重写styles样式更换主题http://bootswatch.com/-->
+
 {% block styles %}
     {{ super() }}
+    <!--重写styles样式更换主题http://bootswatch.com/-->
     <link rel="stylesheet" type="text/css" href="http://bootswatch.com/flatly/bootstrap.min.css">
+    <!--动画闪烁CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/anicollection.css">
+    <!--博客的CSS-->
+    <link rel="stylesheet" type="text/css" href="/static/post.css"/>
+    <!--小图标CSS-->
+    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
 {% endblock styles %}
 
-<!--这里是bar导航-->
 {% block navbar %}
-    <!--使用对象的方式直接写入-->
-{#    {{ nav.top.render() }}#}
+    <!--这里是引入bar导航-->
     {% include 'includes/_navbar.html' %}
 {% endblock navbar %}
 
-{% block content %}
-
-{% endblock content %}
-
 {% block body %}
     {{ super() }}
-    <footer class="navbar navbar-default navbar-fixed-bottom">
-        <div class="navbar-inner navbar-content-center">
-            <p class="container" style="padding: 10px;color: white">
-                ©Copyright 2017 by <a style="color: white" href="https://github.com/qq850482461">lzh</a>
-            </p>
-        </div>
-    </footer>
-{% endblock body %}
+    {% include 'includes/_footer.html' %}
+{% endblock %}
+
+

@@ -2,30 +2,186 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
+    {#    <div class="container">#}
+    {#        <span>作者{{ post.author.username }}</span> <span>日期：{{ post.created }}</span>#}
+    {#        <!--正文-->#}
+    {#        <div>#}
+    {#            {{ post.title }}#}
+    {#        </div>#}
+    {#        <div>#}
+    {#            {{ post.body_html | safe }}#}
+    {#        </div>#}
+    {#        <!--评论内容列表-->#}
+    {#        <!--通过数据库模型posts中关联的comments得到评论对象进行for循环输出-->#}
+    {#        {% for comment in post.comments %}#}
+    {#            <div class="media">#}
+    {#                <div class="media-body">#}
+    {#                    <span>{{ comment.created }}</span>#}
+    {#                    {{ comment.body }}#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        {% endfor %}#}
+    {##}
+    {#        <!--发表评论-->#}
+    {#        <h3>评论</h3>#}
+    {#        <div>#}
+    {#            {{ wtf.quick_form(form) }}#}
+    {#        </div>#}
+    {#    </div>#}
     <div class="container">
-        <span>作者{{ post.author.username }}</span> <span>日期：{{ post.created }}</span>
-        <!--正文-->
-        <div>
-            {{ post.title }}
-        </div>
-        <div>
-            {{ post.body_html | safe }}
-        </div>
-        <!--评论内容列表-->
-        <!--通过数据库模型posts中关联的comments得到评论对象进行for循环输出-->
-        {% for comment in post.comments %}
-            <div class="media">
-                <div class="media-body">
-                    <span>{{ comment.created }}</span>
-                    {{ comment.body }}
-                </div>
-            </div>
-        {% endfor %}
+        <div class="row">
 
-        <!--发表评论-->
-        <h3>评论{{ time }}</h3>
-        <div>
-            {{ wtf.quick_form(form) }}
+            <main class="col-md-8 main-content">
+
+
+                <article id="73" class="post">
+
+                    <header class="post-head">
+                        <h1 class="post-title">{{ post.title }}</h1>
+                        <section class="post-meta">
+                            <span class="author">
+                                <i class="fa fa-smile-o" aria-hidden="true"></i>
+                                <a href="#">预留</a>
+                            </span>
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                            <time class="post-date">
+                                {{ post.created | date}}
+                            </time>
+                        </section>
+                    </header>
+
+                    <!--section class="featured-media"-->
+                    <!--/section-->
+
+                    <section class="post-content">
+                        {{ post.body_html | safe }}
+                    </section>
+
+                    <footer class="post-footer clearfix">
+                        <div class="pull-left tag-list">
+                            <i class="fa fa-folder-open-o"></i>
+
+                        </div>
+
+                    </footer>
+
+                </article>
+
+                <div class="about-author clearfix">
+                    {% for comment in post.comments %}
+                        <div class="media">
+                            <div class="media-body">
+                                <span>{{ comment.created }}</span>
+                                {{ comment.body }}
+                            </div>
+
+                        </div>
+                    {% endfor %}
+                    <!--发表评论-->
+                    <footer class="post-footer clearfix">
+                        <div class="pull-left tag-list">
+                            <i class="fa fa-folder-open-o"></i>
+                        </div>
+                    </footer>
+                    <div>
+                        {{ wtf.quick_form(form) }}
+                    </div>
+
+
+                </div>
+
+                <div class="prev-next-wrap clearfix">
+
+                    <a class="btn btn-default" href="/post/laravel-5-4-is-now-released/"><i
+                            class="fa fa-angle-left fa-fw"></i> 上一个文章</a>
+                    &nbsp;
+
+                </div>
+
+
+            </main>
+
+            <aside class="col-md-4 sidebar">
+                <!-- start widget -->
+                <!-- end widget -->
+
+                <!-- start tag cloud widget -->
+                <div class="widget">
+                    <h4 class="title">社区</h4>
+                    <div class="content community">
+                        <p>QQ群：462694081</p>
+                        <p><a href="http://wenda.golaravel.com/" title="Laravel中文网问答社区" target="_blank"
+                              onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '问答社区'])"><i
+                                class="fa fa-comments"></i> 问答社区</a></p>
+                    </div>
+                </div>
+                <!-- end tag cloud widget -->
+
+                <!-- start widget -->
+                <div class="widget">
+                    <h4 class="title">下载</h4>
+                    <div class="content download">
+                        <a href="/download/" class="btn btn-default btn-block"
+                           onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">Laravel
+                            &amp; Lumen 一键安装包下载</a>
+                    </div>
+                </div>
+                <!-- end widget -->
+
+                <div class="widget">
+                    <h4 class="title">文档</h4>
+                    <a href="http://lumen.golaravel.com/docs/" class="btn btn-default btn-block" target="_blank">Lumen
+                        中文文档</a>
+                    <a href="http://www.golaravel.com/laravel/docs/5.0/" class="btn btn-default btn-block"
+                       target="_blank">5.0
+                        中文文档</a>
+                    <a href="http://www.golaravel.com/laravel/docs/4.2/" class="btn btn-default btn-block"
+                       target="_blank">4.2
+                        中文文档</a>
+                    <a href="http://www.golaravel.com/laravel/docs/4.1/" class="btn btn-default btn-block"
+                       target="_blank">4.1
+                        中文文档</a>
+                    <a href="http://www.golaravel.com/laravel/docs/4.0/" class="btn btn-default btn-block"
+                       target="_blank">4.0
+                        中文文档</a>
+                </div>
+
+                <!-- start tag cloud widget -->
+                <div class="widget">
+                    <h4 class="title">标签云</h4>
+                    <div class="content tag-cloud">
+                        <a href="/tag/laravel-5-2/">Laravel 5.2</a>
+                        <a href="/tag/spark/">Spark</a>
+                        <a href="/tag/jing-xiang/">镜像</a>
+                        <a href="/tag/xin-ban-ben-fa-bu/">新版本发布</a>
+                        <a href="/tag/lts/">LTS</a>
+                        <a href="/tag/wei-kuang-jia/">微框架</a>
+                        <a href="/tag/lumen/">Lumen</a>
+                        <a href="/tag/ming-ming-kong-jian/">命名空间</a>
+                        <a href="/tag/laravel4/">Laravel4</a>
+                        <a href="/tag/whoops/">Whoops</a>
+                        <a href="/tag/event/">Event</a>
+                        <a href="/tag/sheng-ji/">升级</a>
+                        <a href="/tag/laravle5/">laravle5</a>
+                        <a href="/tag/error-page/">错误页</a>
+                        <a href="/tag/laravel-5/">Laravel 5</a>
+                        <a href="/tag/artisan/">Artisan</a>
+                        <a href="/tag/laravel-5-1/">Laravel 5.1</a>
+                        <a href="/tag/lravel/">Lravel</a>
+
+
+                        <a href="/tag-cloud/">...</a>
+                    </div>
+                </div>
+                <!-- end tag cloud widget -->
+
+                <!-- start widget -->
+                <!-- end widget -->
+
+                <!-- start widget -->
+                <!-- end widget -->                </aside>
+
         </div>
     </div>
+
 {% endblock content %}

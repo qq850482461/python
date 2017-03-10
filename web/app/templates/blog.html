@@ -1,10 +1,5 @@
 {% extends 'base.html' %}
-{% block head %}
-    {{ super() }}
-    <!--博客的CSS-->
-    <link rel="stylesheet" type="text/css" href="/static/post.css"/>
-    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
-{% endblock head %}
+
 {% block content %}
     <section class="content-wrap">
         <div class="container">
@@ -16,16 +11,19 @@
                             <div class="post-head">
                                 <h1 class="post-title"><a href="/ghost-0-6-2-released/">{{ post.title }}</a></h1>
                                 <div class="post-meta">
-                                    <span class="author">作者：<a href="/author/wangsai/">预留</a></span>
-                                    <time class="post-date" datetime="2015年4月26日星期日晚上11点43分"
-                                          title="2015年4月26日星期日晚上11点43分">
-                                        {{ post.created }}
+                                    <span class="author">
+                                        <i class="fa fa-smile-o" aria-hidden="true"></i>
+                                        <a href="#">预留</a>
+                                    </span>
+                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    <time class="post-date">
+                                        {{ post.created | date}}
                                     </time>
                                 </div>
                             </div>
                             <div class="post-content">
                                 <!--jinja2的truncate实现摘要功能-->
-                                <p>{{ post.body | truncate(300,False, ' ...', 0)}}</p>
+                                <p>{{ post.body_html | safe |truncate(300,False, ' ...', 0) }}</p>
                             </div>
                             <div class="post-permalink">
                                 <a href="/posts/{{ post.id }}" class="btn btn-default">阅读全文</a>

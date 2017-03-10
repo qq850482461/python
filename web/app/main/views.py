@@ -108,3 +108,4 @@ def blog():
 def bloglists():
     post = Post.query.all()
     return render_template('bloglists.html',posts=post)
+

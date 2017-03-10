@@ -3,6 +3,8 @@ from werkzeug.utils import secure_filename
 from app import create_app
 app = create_app()
 manager = Manager(app)
+
+
 @manager.command
 def dev():
     from livereload import Server
