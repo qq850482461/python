@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{# 导入render_pagination的宏 #}
+{% from "bootstrap/pagination.html" import render_pagination %}
 
 {% block content %}
     <section class="content-wrap">
@@ -9,15 +11,15 @@
                     {% for post in posts %}
                         <article id="83" class="post tag-about-ghost tag-release">
                             <div class="post-head">
-                                <h1 class="post-title"><a href="/ghost-0-6-2-released/">{{ post.title }}</a></h1>
+                                <h1 class="post-title"><a href="/posts/{{ post.id }}">{{ post.title }}</a></h1>
                                 <div class="post-meta">
                                     <span class="author">
                                         <i class="fa fa-smile-o" aria-hidden="true"></i>
-                                        <a href="#">预留</a>
+                                        <a href="#">周和</a>
                                     </span>
                                     <i class="fa fa-calendar" aria-hidden="true"></i>
                                     <time class="post-date">
-                                        {{ post.created | date}}
+                                        {{ post.created | date }}
                                     </time>
                                 </div>
                             </div>
@@ -39,11 +41,11 @@
                         </article>
                     {% endfor %}
 
-                    <nav class="pagination" role="navigation">
-                        <span class="page-number">第 1 页 / 共 8 页</span>
-                        <a class="older-posts" href="/page/2/"><i class="fa fa-angle-right"></i></a>
-                    </nav>
-
+                    {% if pagination %}
+                        <div style="text-align:center">
+                            {{ render_pagination(pagination) }}
+                        </div>
+                    {% endif %}
 
                 </main>
 
@@ -83,34 +85,10 @@
                         <div class="content tag-cloud">
                             <a href="/tag/jquery/">jQuery</a>
                             <a href="/tag/ghost-0-7-ban-ben/">Ghost 0.7 版本</a>
-                            <a href="/tag/opensource/">开源</a>
-                            <a href="/tag/zhu-shou-han-shu/">助手函数</a>
-                            <a href="/tag/tag-cloud/">标签云</a>
-                            <a href="/tag/navigation/">导航</a>
-                            <a href="/tag/customize-page/">自定义页面</a>
-                            <a href="/tag/static-page/">静态页面</a>
-                            <a href="/tag/roon-io/">Roon.io</a>
-                            <a href="/tag/configuration/">配置文件</a>
-                            <a href="/tag/upyun/">又拍云存储</a>
-                            <a href="/tag/upload/">上传</a>
-                            <a href="/tag/handlebars/">Handlebars</a>
-                            <a href="/tag/email/">邮件</a>
-                            <a href="/tag/shortcut/">快捷键</a>
-                            <a href="/tag/yong-hu-zhi-nan/">用户指南</a>
-                            <a href="/tag/theme-market/">主题市场</a>
-                            <a href="/tag/release/">新版本发布</a>
-
-
                             <a href="/tag-cloud/">...</a>
                         </div>
                     </div>
-                    <!-- end tag cloud widget -->
-
-                    <!-- start widget -->
-                    <!-- end widget -->
-
-                    <!-- start widget -->
-                    <!-- end widget -->                </aside>
+                 </aside>
 
             </div>
         </div>

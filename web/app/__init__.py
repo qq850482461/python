@@ -7,7 +7,6 @@ from flask_pagedown import PageDown#markdown预览模块
 from flask_moment import Moment#时钟实时刷新
 
 
-
 # 正则表达式
 class RegexConverter(BaseConverter):  # 正则转换器
     def __init__(self, url_map, *items):
@@ -34,7 +33,7 @@ def create_app():
     app = Flask(__name__)
     app.url_map.converters['regex'] = RegexConverter  # 正则转换器
     app.config.from_pyfile('config')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:lzh3101977@localhost:3306/test'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:lzh3101977@localhost:3306/test' #数据库参数要使用pymysql来做数据库驱动
     app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 

@@ -92,6 +92,7 @@ def posts(id):
         comment = Comment(body=form.body.data, post=post, created=nowtime)
         db.session.add(comment)
         db.session.commit()
+
     # form对象传到前端模版，post对象传到前端模版(前端使用的变量名字 = views中定义的对象)
     return render_template('detail.html', form=form, post=post, time=nowtime)
 
@@ -100,11 +101,17 @@ def posts(id):
 @main.route('/blog', methods=['GET', 'POST'])
 def blog():
     #查询所有文章对象
-    post = Post.query.all()
-    return render_template('blog.html',posts=post)
+    #post = Post.query.all()
+    page_idnex = request.args.get("page", 1, type=int)  # 获取url中get请求的参数
+    query = Post.query.order_by(Post.created.desc())#order_by是升序 .desc()是降序，这里做一个反向排序
+    pagination = query.paginate(page_idnex,per_page=5,error_out=False)#SQLAlchemy的分页方法
+    post = pagination.items
+
+    return render_template('blog.html',posts=post,pagination=pagination)
 
 # 实现博客的管理编辑删除页面
 @main.route('/bloglists',methods=['GET', 'POST'])
+@login_required
 def bloglists():
     post = Post.query.all()
     return render_template('bloglists.html',posts=post)

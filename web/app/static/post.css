@@ -700,7 +700,7 @@ pre {
 .pagination {
     margin: 0 0 35px;
     text-align: center;
-    display: block;
+    /*display: block;*/
 }
 
 .pagination a {
@@ -1049,3 +1049,4 @@ pre {
     height: 30px;
     line-height: 30px;
 }
+
