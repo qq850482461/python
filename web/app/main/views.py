@@ -83,7 +83,7 @@ def edit(id=0):
 # 发表后的显示页面
 @main.route('/posts/<int:id>', methods=['GET', 'POST'])
 def posts(id):
-    form = CommentForm()
+    form = CommentForm()#表单对象
     # 获取文章的ID对象没有就返回404
     post = Post.query.get_or_404(id)
     # 提交评论表单
@@ -113,6 +113,7 @@ def blog():
 @main.route('/bloglists',methods=['GET', 'POST'])
 @login_required
 def bloglists():
-    post = Post.query.all()
+    #post = Post.query.all()
+    post = Post.query.order_by(Post.created.desc()) #先升序再降序
     return render_template('bloglists.html',posts=post)
 
