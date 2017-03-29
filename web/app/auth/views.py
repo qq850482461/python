@@ -18,7 +18,6 @@ def login():
     if form.validate_on_submit():  # 第一次访问服务器会收到一个没有表单数据的get请求所以这里会变成false，表单数据通过验证就会返回true
         user = User.query.filter_by(username=form.username.data,password=form.password.data).first()
         username = User.query.filter_by(username=form.username.data).first()
-        print(user,user.id)
         if user is not None:
             login_user(user)
             return redirect(url_for('main.index'))

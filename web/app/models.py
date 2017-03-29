@@ -84,3 +84,6 @@ class Comment(db.Model):
     created = db.Column(db.DateTime)
 
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+
+    def __repr__(self):
+        return "body内容是: {0}".format(self.body)

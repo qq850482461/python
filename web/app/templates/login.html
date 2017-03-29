@@ -10,7 +10,7 @@
     <div class="container">
         <!--flah的消息都在get_flashed_messages的对象中-->
         {% for message in get_flashed_messages() %}
-            <!--alert-info是bootstrap消息输出-->
+            <!--alert-info样式是bootstrap消息输出-->
             <div class="alert-info">{{ message }}</div>
         {% endfor %}
         <!--用wtf.quick_form快速创建form表单-->

@@ -7,6 +7,7 @@ from .forms import CommentForm, PostForm  # 表单
 from .. import db
 from ..models import Post, Comment
 from datetime import datetime
+import json
 
 nowtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -73,7 +74,7 @@ def edit(id=0):
             db.session.commit()
             return redirect(url_for('main.posts', id=post.id))
 
-        #给前端传入数据库保存的数据
+        #给前端传入数据库保存的数据(这样就可以在原文的基础上编辑)
         form.title.data = post.title
         form.body.data = post.body
 
@@ -86,12 +87,15 @@ def posts(id):
     form = CommentForm()#表单对象
     # 获取文章的ID对象没有就返回404
     post = Post.query.get_or_404(id)
+
     # 提交评论表单
     if form.validate_on_submit():
         # 这里的post=post是关联文章的Post数据库模型的backref的post对象==当前文章的变量post存放的文章id对象
         comment = Comment(body=form.body.data, post=post, created=nowtime)
+        print(comment,type(comment))
         db.session.add(comment)
         db.session.commit()
+        return redirect(url_for('main.posts', id=post.id))
 
     # form对象传到前端模版，post对象传到前端模版(前端使用的变量名字 = views中定义的对象)
     return render_template('detail.html', form=form, post=post, time=nowtime)
@@ -117,3 +121,26 @@ def bloglists():
     post = Post.query.order_by(Post.created.desc()) #先升序再降序
     return render_template('bloglists.html',posts=post)
 
+
+#实现文章删除功能
+@main.route('/posts/<int:id>/delete',methods=['GET','POST'])
+@login_required
+def post_delete(id):
+    #创建一个res的json对象
+    response = {
+        'status':200,
+        'message':'success'
+    }
+    #查询文章ID拿到数据对象
+    post = Post.query.filter_by(id=id).first()
+    print(post,"类型是",type(post))
+    #如果数据库没有这个文章ID,post就是None
+    if not post:
+        response['status'] = 404
+        response['message'] = 'Post Not Found'
+        return json.dumps(response)  # dumps是返回一个str类型的json
+    else:
+        #提交删除
+        db.session.delete(post)
+        db.session.commit()
+        return json.dumps(response)
