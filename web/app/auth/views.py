@@ -1,9 +1,9 @@
 from flask import render_template, request, redirect, url_for, make_response, flash, session
-from . import auth  # 这里用.代表当前包的__init__
+from . import auth  # 这里用.代表当前包的__init__ #导入蓝图
 from .forms import LoginForm, RegisterForm
 from .. import db  # 引用包最外面的__init__
 from ..models import User
-from flask_login import login_user,logout_user,current_user
+from flask_login import login_user,logout_user
 
 #登录页面
 @auth.route('/login', methods=['GET', 'POST'])  # http方法
@@ -45,7 +45,7 @@ def register():
             db.session.add(user)
             db.session.commit()
             flash('{0}注册成功！！'.format(form.username.data))
-            return redirect(url_for('auth.register'))
+            return redirect(url_for('main.index'))
         except:
             db.session.rollback()
             flash('{0}注册失败或帐号已经被注册'.format(form.username.data))
