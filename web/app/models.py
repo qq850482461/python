@@ -1,7 +1,11 @@
-from . import db, login_manager
+from . import login_manager,db
+from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime
 from markdown import markdown
+
+
+
 
 
 # 这里用户需要继承flask_login的UserMixin
