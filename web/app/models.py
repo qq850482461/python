@@ -39,6 +39,7 @@ class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(255))
+    tag = db.Column(db.String(255))
     body = db.Column(db.Text())
     body_html = db.Column(db.Text())
     created = db.Column(db.DateTime)  # , index=True, default=datetime.utcnow

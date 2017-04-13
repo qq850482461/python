@@ -10,7 +10,8 @@ from flask_admin import Admin,AdminIndexView#flask-admin
 from flask_admin.contrib.sqla import ModelView #admin的模型视图
 from .admin import MyView,MyHomeView,MyUserModel,MyPostModel,MyCommentModel#引用自己写的
 
-from flask_babelex import Babel #flask-admin 中文化
+from flask_babelex import Babel #flask-admin 中文化    db.init_app(app)
+
 
 
 # 正则表达式
@@ -48,7 +49,6 @@ def create_app():
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 
     bootstrap.init_app(app)
-    db.init_app(app)
     login_manager.init_app(app)
     pagedown.init_app(app)
     moment.init_app(app)
