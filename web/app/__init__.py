@@ -43,11 +43,9 @@ login_manager.login_view = 'auth.login'#制定系统默认的登录页面
 def create_app():
     app = Flask(__name__)
     app.url_map.converters['regex'] = RegexConverter  # 正则转换器
-    app.config.from_pyfile('config')
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:lzh3101977@localhost:3306/test' #数据库参数要使用pymysql来做数据库驱动
-    app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+    app.config.from_pyfile('config.cfg')#flask配置文件
 
+    db.init_app(app)
     bootstrap.init_app(app)
     login_manager.init_app(app)
     pagedown.init_app(app)
@@ -62,8 +60,6 @@ def create_app():
     babel.init_app(app)
 
 
-    app.config['BABEL_DEFAULT_LOCALE'] = 'zh_CN' #配置中文
-
     #注册蓝图
     from .auth import auth as auth_blueprint
     from .main import main as main_blueprint
@@ -72,7 +68,6 @@ def create_app():
 
     app.jinja_env.filters['date'] = date_filter #注册自己定义的过滤函数
 
-    app.debug = True
     return app
 
 

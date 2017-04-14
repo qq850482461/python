@@ -1,5 +1,5 @@
 from os import path
-from flask import render_template, request, redirect, url_for, make_response, flash, session
+from flask import render_template, request, redirect, url_for, make_response, flash, session,abort
 from werkzeug.utils import secure_filename
 from flask_login import login_required, current_user
 from . import main  # 导入蓝图
@@ -111,7 +111,29 @@ def blog():
     pagination = query.paginate(page_idnex,per_page=5,error_out=False)#SQLAlchemy的分页方法
     post = pagination.items
 
-    return render_template('blog.html',posts=post,pagination=pagination)
+    all_query = Post.query.filter(Post.tag!=None).all()#查询所有不是None的tag数据
+    tag_list = [i.tag for i in all_query]#所有数据的tag列表
+    rm_duplication = list(set(tag_list))#去重后的列表
+
+    return render_template('blog.html',posts=post,pagination=pagination,tag_list=rm_duplication)
+
+#文章的标签页面
+@main.route('/tag/<tag>',methods=['GET','POST'])
+def tag(tag):
+    tagname = str(tag)#转换URL得到tag变成str
+    query = Post.query.filter_by(tag=tagname).all()#查询的结果
+    num = len(query)#tag个数
+    all_query = Post.query.filter(Post.tag!=None).all()#查询所有不是None的tag数据
+    tag_list = [i.tag for i in all_query]#所有数据的tag列表
+    rm_duplication = list(set(tag_list))#去重后的列表
+
+    if not query:
+        abort(404)
+
+
+    return render_template('tag.html',posts=query,tagname=tagname,num=num,tag_list=rm_duplication)
+
+
 
 # 实现博客的管理编辑删除页面
 @main.route('/bloglists',methods=['GET', 'POST'])
@@ -134,7 +156,7 @@ def post_delete(id):
     #查询文章ID拿到数据对象
     post = Post.query.filter_by(id=id).first()
     print(post,"类型是",type(post))
-    #如果数据库没有这个文章ID,post就是None
+    #如果数据库没有这个文章ID,post就是空列表
     if not post:
         response['status'] = 404
         response['message'] = 'Post Not Found'

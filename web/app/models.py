@@ -47,8 +47,8 @@ class Post(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post')# 关联用户数据库
 
-    def __repr__(self):  # 这里决定current_user返回的是什么
-        return 'posts_id %r' % self.id
+    def __repr__(self):  # 这里决定current_user返回的是什么和查询结果显示的值
+        return "<post_id={0}|post_tag={1}>".format(self.id,self.tag)
 
     @staticmethod
     def on_body_changed(targer, value, oldvalue, initiator):

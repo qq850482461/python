@@ -7,6 +7,14 @@
         <div class="container">
             <div class="row">
                 <main class="col-md-8 main-content">
+                    <div class="cover tag-cover">
+                        <h3 class="tag-name">
+                            标签：{{ tagname }}
+                        </h3>
+                        <div class="post-count">
+                            共 {{ num }} 篇文章
+                        </div>
+                    </div>
                     <!--for循环模型中的post对象-->
                     {% for post in posts %}
                         <article id="83" class="post tag-about-ghost tag-release">
@@ -34,7 +42,6 @@
                             <footer class="post-footer clearfix">
                                 <div class="pull-left tag-list">
                                     <i class="fa fa-folder-open-o"></i>
-                                    <a href="/tag/{{ post.tag }}">{{ post.tag }}</a>
                                 </div>
                                 <div class="pull-right share">
                                 </div>
@@ -42,11 +49,11 @@
                         </article>
                     {% endfor %}
 
-                    {% if pagination %}
-                        <div style="text-align:center">
-                            {{ render_pagination(pagination) }}
-                        </div>
-                    {% endif %}
+{#                    {% if pagination %}#}
+{#                        <div style="text-align:center">#}
+{#                            {{ render_pagination(pagination) }}#}
+{#                        </div>#}
+{#                    {% endif %}#}
 
                 </main>
 
@@ -81,12 +88,12 @@
                     <div class="widget">
                         <h4 class="title">标签云</h4>
                         <div class="content tag-cloud">
-                            {% for i in tag_list %}
-                                <a href="/tag/{{ i }}">{{ i }}</a>
+                            {% for post in tag_list %}
+                                <a href="/tag/{{ post }}">{{ post }}</a>
                             {% endfor %}
                         </div>
                     </div>
-                 </aside>
+                </aside>
 
             </div>
         </div>
