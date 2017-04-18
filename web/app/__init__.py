@@ -10,8 +10,7 @@ from flask_admin import Admin,AdminIndexView#flask-admin
 from flask_admin.contrib.sqla import ModelView #admin的模型视图
 from .admin import MyView,MyHomeView,MyUserModel,MyPostModel,MyCommentModel#引用自己写的
 
-from flask_babelex import Babel #flask-admin 中文化    db.init_app(app)
-
+from flask_babelex import Babel #flask-admin 中文化
 
 
 # 正则表达式

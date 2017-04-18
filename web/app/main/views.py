@@ -1,13 +1,12 @@
 from os import path
-from flask import render_template, request, redirect, url_for, make_response, flash, session,abort
-from werkzeug.utils import secure_filename
-from flask_login import login_required, current_user
+from flask import render_template, request, redirect, url_for,flash, session,abort,jsonify
+from werkzeug.utils import secure_filename #上传文件
+from flask_login import login_required, current_user #登录模块
 from . import main  # 导入蓝图
 from .forms import CommentForm, PostForm  # 表单
 from .. import db
 from ..models import Post, Comment
 from datetime import datetime
-import json
 
 nowtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -27,7 +26,7 @@ def user(user_id):
 def about():
     return render_template('about.html')
 
-
+#上传文件
 @main.route('/upload', methods=['GET', 'POST'])  # 上传文件的http方法
 def upload():
     if request.method == 'POST':
@@ -54,10 +53,10 @@ def edit(id=0):
     form = PostForm()
     #新增发表
     if id == 0:
+        print("发表文章到位")
         if form.validate_on_submit():
-            print(current_user, type(current_user), nowtime)
             #autchor是User模型的backref的参数，autchor存储一个User对象ORM层将会知道怎么完成author_id字段，所以这里只需要传入当前的用户对象。
-            new_post = Post(title=form.title.data, body=form.body.data, author=current_user, created=nowtime)
+            new_post = Post(title=form.title.data,tag=form.tag.data,body=form.body.data,author=current_user, created=nowtime)
             db.session.add(new_post)
             db.session.commit()
             return redirect(url_for('main.posts', id=new_post.id))
@@ -65,10 +64,10 @@ def edit(id=0):
     else:
         #查询POST模型中的id返回对象
         post = Post.query.get_or_404(id)
-        print(post.id,nowtime)
         if form.validate_on_submit():
             post.title = form.title.data
             post.body = form.body.data
+            post.tag = form.tag.data
 
             db.session.add(post)
             db.session.commit()
@@ -77,8 +76,9 @@ def edit(id=0):
         #给前端传入数据库保存的数据(这样就可以在原文的基础上编辑)
         form.title.data = post.title
         form.body.data = post.body
+        form.tag.data = post.tag
 
-    return render_template('new.html', form=form)
+    return render_template('new.html',form=form,title="发表文章")
 
 
 # 发表后的显示页面
@@ -92,7 +92,6 @@ def posts(id):
     if form.validate_on_submit():
         # 这里的post=post是关联文章的Post数据库模型的backref的post对象==当前文章的变量post存放的文章id对象
         comment = Comment(body=form.body.data, post=post, created=nowtime)
-        print(comment,type(comment))
         db.session.add(comment)
         db.session.commit()
         return redirect(url_for('main.posts', id=post.id))
@@ -155,14 +154,13 @@ def post_delete(id):
     }
     #查询文章ID拿到数据对象
     post = Post.query.filter_by(id=id).first()
-    print(post,"类型是",type(post))
     #如果数据库没有这个文章ID,post就是空列表
     if not post:
         response['status'] = 404
         response['message'] = 'Post Not Found'
-        return json.dumps(response)  # dumps是返回一个str类型的json
+        return jsonify(response)
     else:
         #提交删除
         db.session.delete(post)
         db.session.commit()
-        return json.dumps(response)
+        return jsonify(response)

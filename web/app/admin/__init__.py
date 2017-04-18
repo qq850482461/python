@@ -50,6 +50,7 @@ class MyPostModel(ModelView):
     column_labels = {
         "id": "ID",
         "title": "标题",
+        "tag": "标签",
         "body": "文章",
         "body_html": "MarkDown",
         "created": "创建时间",
@@ -57,7 +58,7 @@ class MyPostModel(ModelView):
         "comments": "关联评论",
         "author": "创建用户"
     }
-    column_list = ("id", "title", "body", "body_html", "created")
+    column_list = ("id", "tag","title", "body", "body_html", "created")
     column_searchable_list = ('title', 'id')
 
 
