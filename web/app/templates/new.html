@@ -31,8 +31,6 @@
 
 {% block scripts %}
     {{ super() }}
-    {#pagedown预览需要写入Javascript再通过(only_preview=True)实现时时预览#}
-    {#    {{ pagedown.include_pagedown() }}#}
     <!--editormd的JS-->
     <script src="{{ url_for('static',filename='js/editormd.min.js') }}"></script>
 {% endblock %}
@@ -55,37 +53,8 @@
                 </div>
             </div>
             <div id="test-editormd" class="form-group">
-                {{ form.body(style="display:none;" ) }}
+                {{ form.body(style="display:none;")}}
             </div>
         </form>
-
-{#                        <div class="page-header">#}
-{#                            <h1>发表文章</h1>#}
-{#                        </div>#}
-{#                        <div class="edit_article">#}
-{#                            <div class="col-md-6">#}
-{#                                <form method="POST" class="form" role="form">#}
-{#                 防止表单跨域攻击#}
-{#                                    {{ form.hidden_tag() }}#}
-{#                                    <div class="form-group">#}
-{#                                        {{ form.title(class="form-control", placeholder=("请输入文章标题")  ) }}#}
-{#                                    </div>#}
-{#                                    <div class="form-group">#}
-{#                                        {{ form.tag(class="form-control", placeholder=("请输入文章标签")) }}#}
-{#                                    </div>#}
-{#                                    <div class="form-group">#}
-{#                                        {{ form.body(only_input=True,rows=20,class="form-control") }}#}
-{#                                    </div>#}
-{#                                    <div class="form-group">#}
-{#                                        {{ form.submit(class="btn btn-primary") }}#}
-{#                                    </div>#}
-{#                                </form>#}
-{#                            </div>#}
-{#                            <div class="col-md-6">#}
-{#                                <div>#}
-{#                                    {{ form.body(only_preview=True) }}#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
     </div>
 {% endblock %}

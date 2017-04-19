@@ -3,7 +3,6 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.routing import BaseConverter#自定义正则表达式
 from flask_login import LoginManager#登录模块
-from flask_pagedown import PageDown#markdown预览模块
 from flask_moment import Moment#时钟实时刷新
 
 from flask_admin import Admin,AdminIndexView#flask-admin
@@ -29,7 +28,6 @@ def date_filter(s):
 
 bootstrap = Bootstrap()  # 实例化Bootstrap
 db = SQLAlchemy()#数据库实例化
-pagedown = PageDown()#博客事实预览的pagedown
 moment = Moment()#实例化时间刷新模块
 flask_admin = Admin(name='博客后台',template_mode='bootstrap3',index_view=MyHomeView())#实例化flask-admin
 babel = Babel() #实例化babel
@@ -47,7 +45,6 @@ def create_app():
     db.init_app(app)
     bootstrap.init_app(app)
     login_manager.init_app(app)
-    pagedown.init_app(app)
     moment.init_app(app)
     flask_admin.init_app(app)
     flask_admin.add_view(MyView(name="统计？"))#如果加了endpoit就会覆盖类名小写的myview

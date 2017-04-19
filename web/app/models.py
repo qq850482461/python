@@ -1,11 +1,9 @@
-from . import login_manager,db
+from . import login_manager, db
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from datetime import datetime
 from markdown import markdown
-
-
-
+import bleach#清理html标签
 
 
 # 这里用户需要继承flask_login的UserMixin
@@ -45,39 +43,38 @@ class Post(db.Model):
     created = db.Column(db.DateTime)  # , index=True, default=datetime.utcnow
 
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    comments = db.relationship('Comment', backref='post')# 关联用户数据库
+    comments = db.relationship('Comment', backref='post')  # 关联用户数据库
 
     def __repr__(self):  # 这里决定current_user返回的是什么和查询结果显示的值
-        return "<post_id={0}|post_tag={1}>".format(self.id,self.tag)
+        return "[post_id={0}|post_tag={1]".format(self.id, self.tag)
 
+
+    #注册监听函数
     @staticmethod
-    def on_body_changed(targer, value, oldvalue, initiator):
-        if value is None or (value is ''):
-            targer.body_html = ''
-        else:
-            targer.body_html = markdown(value)
-    # @staticmethod
-    # def on_body_changed(target, value, oldvalue, initiator):
-    #     # 需要转换的标签
-    #     allowed_tags = [
-    #         'a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
-    #         'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-    #         'h1', 'h2', 'h3', 'p', 'img'
-    #     ]
-    #     # 需要提取的标签属性，否则会被忽略掉
-    #     attrs = {
-    #         '*': ['class'],
-    #         'a': ['href', 'rel'],
-    #         'img': ['src', 'alt']
-    #     }
-    #     target.content_html = bleach.linkify(
-    #         bleach.clean(
-    #             markdown(value, output_format='html'),
-    #             tags=allowed_tags,
-    #             attributes=attrs,
-    #             strip=True
-    #         )
-    #     )
+    def on_body_changed(target, value, oldvalue, initiator):
+        # 需要转换的标签
+        allowed_tags = [
+            'a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+            'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+            'h1', 'h2', 'h3', 'p', 'img'
+        ]
+        # 需要提取的标签属性，否则会被忽略掉
+        attrs = {
+            '*': ['class'],
+            'a': ['href', 'rel'],
+            'img': ['src', 'alt']
+        }
+        #清理html标签
+        target.body_html = bleach.linkify(
+            bleach.clean(
+                markdown(value, output_format='html'),
+                tags=allowed_tags,
+                attributes=attrs,
+                strip=True
+            )
+        )
+
+#监听body变动添加到
 db.event.listen(Post.body, 'set', Post.on_body_changed)
 
 
