@@ -1,7 +1,12 @@
 from flask import url_for
 from flask_admin import BaseView, expose, AdminIndexView
 from flask_login import login_required, current_user
-from flask_admin.contrib.sqla import ModelView
+from flask_admin.contrib.sqla import ModelView #数据库模型
+from flask_admin.contrib.fileadmin import FileAdmin #文件管理
+from os import path,pardir
+
+basepath = path.abspath(path.join(path.dirname(__file__),pardir,pardir,'upload')) #路径
+
 
 
 # 默认的主页视图
@@ -71,3 +76,7 @@ class MyCommentModel(ModelView):
     }
     column_list = ("id", "body", "created")
     column_searchable_list = ('body', 'id')
+
+
+class MyFile(FileAdmin):
+    pass

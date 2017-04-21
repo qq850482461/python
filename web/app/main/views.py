@@ -1,15 +1,16 @@
-from os import path
-from flask import render_template, request, redirect, url_for,flash, session,abort,jsonify
+from os import path ,pardir
+from flask import render_template, request, redirect, url_for,flash, session,abort,jsonify,send_from_directory
 from werkzeug.utils import secure_filename #上传文件
 from flask_login import login_required, current_user #登录模块
 from . import main  # 导入蓝图
 from .forms import CommentForm, PostForm  # 表单
-from .. import db
-from ..models import Post, Comment
+from .. import db #引用orm
+from ..models import Post, Comment #表单
 from datetime import datetime
+import os
 
-nowtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
+nowtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S") #当前时间
+basepath = path.abspath(path.join(path.dirname(__file__),pardir,pardir,'upload')) #路径
 
 @main.route('/')  # 装饰起用于根目录
 def index():
@@ -27,15 +28,15 @@ def about():
     return render_template('about.html')
 
 #上传文件
-@main.route('/upload', methods=['GET', 'POST'])  # 上传文件的http方法
-def upload():
-    if request.method == 'POST':
-        f = request.files['file']  # 这里的的键值file对应upload.html的name="file"
-        basepath = path.abspath(path.dirname(__file__))  # 返回path规范化的绝对路径
-        upload_path = path.join(basepath, 'static/')  # 拼接路径
-        f.save(upload_path + secure_filename(f.filename))  # 检验上传文件并且保存
-        return redirect(url_for('upload'))  # 指定为postback
-    return render_template('upload.html')
+# @main.route('/upload/', methods=['GET', 'POST'])  # 上传文件的http方法
+# def upload():
+#     if request.method == 'POST':
+#         f = request.files['file']  # 这里的的键值file对应upload.html的name="file"
+#         basepath = path.abspath(path.dirname(__file__))  # 返回path规范化的绝对路径
+#         upload_path = path.join(basepath, 'static/')  # 拼接路径
+#         f.save(upload_path + secure_filename(f.filename))  # 检验上传文件并且保存
+#         return redirect(url_for('upload'))  # 指定为postback
+#     return render_template('upload.html')
 
 
 # 自己定义一个错误页面传入错误代码,如果不是蓝图就是用errorhandler
@@ -53,7 +54,6 @@ def edit(id=0):
     form = PostForm()
     #新增发表
     if id == 0:
-        print("发表文章到位")
         if form.validate_on_submit():
             #autchor是User模型的backref的参数，autchor存储一个User对象ORM层将会知道怎么完成author_id字段，所以这里只需要传入当前的用户对象。
             new_post = Post(title=form.title.data,tag=form.tag.data,body=form.body.data,author=current_user, created=nowtime)
@@ -97,14 +97,13 @@ def posts(id):
         return redirect(url_for('main.posts', id=post.id))
 
     # form对象传到前端模版，post对象传到前端模版(前端使用的变量名字 = views中定义的对象)
-    return render_template('detail.html', form=form, post=post, time=nowtime)
+    return render_template('post.html', form=form, post=post, time=nowtime)
 
 
 # 显示博客文章列表页面
 @main.route('/blog', methods=['GET', 'POST'])
 def blog():
-    #查询所有文章对象
-    #post = Post.query.all()
+
     page_idnex = request.args.get("page", 1, type=int)  # 获取url中get请求的参数
     query = Post.query.order_by(Post.created.desc())#order_by是升序 .desc()是降序，这里做一个反向排序
     pagination = query.paginate(page_idnex,per_page=5,error_out=False)#SQLAlchemy的分页方法
@@ -129,7 +128,6 @@ def tag(tag):
     if not query:
         abort(404)
 
-
     return render_template('tag.html',posts=query,tagname=tagname,num=num,tag_list=rm_duplication)
 
 
@@ -138,7 +136,6 @@ def tag(tag):
 @main.route('/bloglists',methods=['GET', 'POST'])
 @login_required
 def bloglists():
-    #post = Post.query.all()
     post = Post.query.order_by(Post.created.desc()) #先升序再降序
     return render_template('bloglists.html',posts=post)
 
@@ -164,3 +161,32 @@ def post_delete(id):
         db.session.delete(post)
         db.session.commit()
         return jsonify(response)
+
+
+#编辑器上传图片
+@main.route('/upload/',methods=["POST"])
+def upload():
+    if request.method == "POST":
+        file = request.files.get("editormd-image-file")#拿到前端编辑器上传标签
+        if not file:
+            res = {
+                'success' : 0,
+                'message' : "上传失败"
+            }
+        else:
+            ex = path.splitext(file.filename)[1]#把文件名分成文件名称和扩展名，拿到后缀
+            filename = datetime.now().strftime('%Y%m%d%H%M%S') + ex
+            file.save(path.join(basepath,filename))
+            res = {
+                'success' : 1,
+                'message' : "上传成功",
+                'url' : url_for('.image',filename = filename)
+            }
+        return jsonify(res)
+
+
+
+#上传文件访问服务
+@main.route('/image/<filename>')
+def image(filename):
+    return send_from_directory(basepath,filename)
