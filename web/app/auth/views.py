@@ -20,7 +20,7 @@ def login():
         username = User.query.filter_by(username=form.username.data).first()
         if user is not None:
             login_user(user)
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.blog'))
         elif username is None:
             flash('{0}账户不存在'.format(form.username.data))
         else:
@@ -45,7 +45,7 @@ def register():
             db.session.add(user)
             db.session.commit()
             flash('{0}注册成功！！'.format(form.username.data))
-            return redirect(url_for('main.index'))
+            return redirect(url_for('main.blog'))
         except:
             db.session.rollback()
             flash('{0}注册失败或帐号已经被注册'.format(form.username.data))

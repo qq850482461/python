@@ -56,7 +56,7 @@ class Post(db.Model):
         allowed_tags = [
             'a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
             'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
-            'h1', 'h2', 'h3', 'p', 'img'
+            'h1', 'h2', 'h3', 'p', 'img','toc'
         ]
         # 需要提取的标签属性，否则会被忽略掉
         attrs = {
@@ -64,10 +64,13 @@ class Post(db.Model):
             'a': ['href', 'rel'],
             'img': ['src', 'alt']
         }
-        #清理html标签
+        #清理html标签和markdown扩展
         target.body_html = bleach.linkify(
             bleach.clean(
-                markdown(value, output_format='html'),
+                markdown(value,extensions=['markdown.extensions.extra',
+                                           'markdown.extensions.codehilite',
+                                           'markdown.extensions.toc',
+                                           'markdown.extensions.tables'],output_format='html'),
                 tags=allowed_tags,
                 attributes=attrs,
                 strip=True

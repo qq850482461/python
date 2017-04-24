@@ -656,7 +656,7 @@ pre {
 
 @media (min-width: 1100px) {
     .post-content blockquote {
-        margin-left: -24px;
+
         padding-left: 20px;
         border-width: 4px;
     }

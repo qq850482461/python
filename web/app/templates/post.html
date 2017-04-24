@@ -9,7 +9,7 @@
             <main class="col-md-8 main-content">
 
 
-                <article id="73" class="post">
+                <article id="{{ post.id }}" class="post">
 
                     <header class="post-head">
                         <h1 class="post-title">{{ post.title }}</h1>
@@ -34,7 +34,7 @@
 
                     <footer class="post-footer clearfix">
                         <div class="pull-left tag-list">
-                            <i class="fa fa-folder-open-o"></i>
+                            <i class="fa fa-folder-open-o"><a href="{{ url_for('main.tag',tag=post.tag) }}">{{ post.tag }}</a></i>
 
                         </div>
 
@@ -112,34 +112,6 @@
                 </div>
                 <!-- end tag cloud widget -->
 
-                <!-- start widget -->
-                <div class="widget">
-                    <h4 class="title">下载</h4>
-                    <div class="content download">
-                        <a href="/download/" class="btn btn-default btn-block"
-                           onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">Laravel
-                            &amp; Lumen 一键安装包下载</a>
-                    </div>
-                </div>
-                <!-- end widget -->
-
-                <div class="widget">
-                    <h4 class="title">文档</h4>
-                    <a href="http://lumen.golaravel.com/docs/" class="btn btn-default btn-block" target="_blank">Lumen
-                        中文文档</a>
-                    <a href="http://www.golaravel.com/laravel/docs/5.0/" class="btn btn-default btn-block"
-                       target="_blank">5.0
-                        中文文档</a>
-                    <a href="http://www.golaravel.com/laravel/docs/4.2/" class="btn btn-default btn-block"
-                       target="_blank">4.2
-                        中文文档</a>
-                    <a href="http://www.golaravel.com/laravel/docs/4.1/" class="btn btn-default btn-block"
-                       target="_blank">4.1
-                        中文文档</a>
-                    <a href="http://www.golaravel.com/laravel/docs/4.0/" class="btn btn-default btn-block"
-                       target="_blank">4.0
-                        中文文档</a>
-                </div>
 
                 <!-- start tag cloud widget -->
                 <div class="widget">
@@ -163,8 +135,6 @@
                         <a href="/tag/artisan/">Artisan</a>
                         <a href="/tag/laravel-5-1/">Laravel 5.1</a>
                         <a href="/tag/lravel/">Lravel</a>
-
-
                         <a href="/tag-cloud/">...</a>
                     </div>
                 </div>

@@ -1,29 +1,47 @@
-{% extends 'base.html' %}
-<!--定义一个宏,导入宏然后给一个别名-->
-{% import 'includes/_macro.html' as ui %}
+<!DOCTYPE HTML>
 
+<html>
+	<head>
+		<title>{{ title }}</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="/static/assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="/static/assets/css/main.css" />
+		<!--[if lte IE 8]><link rel="stylesheet" href="/static/assets/css/ie8.css" /><![endif]-->
+		<!--[if lte IE 9]><link rel="stylesheet" href="/static/assets/css/ie9.css" /><![endif]-->
+	</head>
+	<body class="loading">
+		<div id="wrapper">
+			<div id="bg"></div>
+			<div id="overlay"></div>
+			<div id="main">
 
+				<!-- Header -->
+					<header id="header">
+						<a href="{{ url_for('main.blog') }}" id="blog">周周的博客</a>
+						<p>Python &nbsp;&bull;&nbsp; Flask &nbsp;&bull;&nbsp; Bootstrap</p>
+						<nav>
+							<ul>
+								<li><a href="#" class="icon fa-weixin"><span class="label">weixin</span></a></li>
+								<li><a href="#" class="icon fa-qq"><span class="label">QQ</span></a></li>
+								<li><a href="http://weibo.com/u/2868433924" class="icon fa-weibo"><span class="label">weibo</span></a></li>
+								<li><a href="https://github.com/qq850482461" class="icon fa-github"><span class="label">Github</span></a></li>
+							</ul>
+						</nav>
+					</header>
 
-{% block title %}{{ title }}{% endblock title %}
+				<!-- Footer -->
+					<footer id="footer">
+						<span class="copyright">&copy; my blog</span>
+					</footer>
 
-{% block content %}
-    <div class="page-header" style="position: relative;height: auto;min-height: 100%">
-        <div class="container">
-            <h1>{{ self.title() }}</h1>
-            <p>现在时间时: {{ moment(time).format('LLL') }}.</p>
-            <p>{{ moment().calendar() }}.</p>
-        </div>
-    </div>
-
-    {#    <div class="container">#}
-    {#        {{ ui.input('username') }}#}
-    {#        {{ ui.input('password',type='password') }}#}
-    {##}
-    {#    </div>#}
-
-{% endblock content %}
-
-{% block scripts %}
-    {{ super() }}
-    {{ moment.include_moment() }}
-{% endblock %}
+			</div>
+		</div>
+		<!--[if lte IE 8]><script src="/static/assets/js/ie/respond.min.js"></script><![endif]-->
+		<script>
+			window.onload = function() { document.body.className = ''; }
+			window.ontouchmove = function() { return false; }
+			window.onorientationchange = function() { document.body.scrollTop = 0; }
+		</script>
+	</body>
+</html>

@@ -14,7 +14,7 @@ basepath = path.abspath(path.join(path.dirname(__file__),pardir,pardir,'upload')
 
 @main.route('/')  # 装饰起用于根目录
 def index():
-    return render_template('index.html', title='Welcome',time=datetime.utcnow())
+    return render_template('index.html', title='Welcome')
 
 
 @main.route('/user/<regex("[a-z]{3}"):user_id>')  # 正则表达式验证url
@@ -167,7 +167,7 @@ def post_delete(id):
 @main.route('/upload/',methods=["POST"])
 def upload():
     if request.method == "POST":
-        file = request.files.get("editormd-image-file")#拿到前端编辑器上传标签
+        file = request.files.get("editormd-image-file")#拿到前端编辑器上传name标签
         if not file:
             res = {
                 'success' : 0,
