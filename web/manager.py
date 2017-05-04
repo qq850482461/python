@@ -5,8 +5,13 @@ from app import create_app,db
 app = create_app()
 migrate = Migrate(app,db)
 manager = Manager(app)
-manager.add_command('db',MigrateCommand)#增加DB的命令
+manager.add_command('db',MigrateCommand)#增加"db"命令
 
+
+#创建数据库
+@manager.command
+def create_db():
+    db.create_all()
 
 
 
@@ -20,6 +25,5 @@ def dev():
 
 
 if __name__ == '__main__':
-    app.run()
-    #manager.run()
-    # dev()
+    # app.run()
+    manager.run()

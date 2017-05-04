@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+ {% extends 'base.html' %}
 {# 导入render_pagination的宏 #}
 {% from "bootstrap/pagination.html" import render_pagination %}
 
@@ -12,7 +12,7 @@
                             标签：{{ tagname }}
                         </h3>
                         <div class="post-count">
-                            共 {{ num }} 篇文章
+{#                            共 {{ num }} 篇文章#}
                         </div>
                     </div>
                     <!--for循环模型中的post对象-->
@@ -49,11 +49,11 @@
                         </article>
                     {% endfor %}
 
-{#                    {% if pagination %}#}
-{#                        <div style="text-align:center">#}
-{#                            {{ render_pagination(pagination) }}#}
-{#                        </div>#}
-{#                    {% endif %}#}
+                    {% if pagination %}
+                        <div style="text-align:center">
+                            {{ render_pagination(pagination) }}
+                        </div>
+                    {% endif %}
 
                 </main>
 
@@ -72,17 +72,6 @@
                         </div>
                     </div>
                     <!-- end tag cloud widget -->
-
-                    <!-- start widget -->
-                    <div class="widget">
-                        <h4 class="title">下载 Ghost</h4>
-                        <div class="content download">
-                            <a href="/download/" class="btn btn-default btn-block"
-                               onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载Ghost'])">Ghost
-                                中文版（0.7.4）</a>
-                        </div>
-                    </div>
-                    <!-- end widget -->
 
                     <!-- start tag cloud widget -->
                     <div class="widget">

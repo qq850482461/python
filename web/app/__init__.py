@@ -50,10 +50,10 @@ def create_app():
     flask_admin.add_view(MyView(name="统计？"))#如果加了endpoit就会覆盖类名小写的myview的url路由
 
     from .models import User,Post,Comment#引入写在方法内部避免交叉引用
-    flask_admin.add_view(MyUserModel(User,db.session,category="数据模型",name="用户"))
-    flask_admin.add_view(MyPostModel(Post,db.session, category="数据模型",name="文章"))
-    flask_admin.add_view(MyCommentModel(Comment,db.session,category="数据模型",name="评论"))
-    flask_admin.add_view(MyFile(basepath,name='图片管理',endpoint='image'))
+    # flask_admin.add_view(MyUserModel(User,db.session,category="数据模型",name="用户"))
+    # flask_admin.add_view(MyPostModel(Post,db.session, category="数据模型",name="文章"))
+    # flask_admin.add_view(MyCommentModel(Comment,db.session,category="数据模型",name="评论"))
+    # flask_admin.add_view(MyFile(basepath,name='图片管理',endpoint='image'))
 
     babel.init_app(app)
 
