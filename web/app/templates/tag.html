@@ -9,10 +9,10 @@
                 <main class="col-md-8 main-content">
                     <div class="cover tag-cover">
                         <h3 class="tag-name">
-                            标签：{{ tagname }}
+                            标签：{{ tag }}
                         </h3>
                         <div class="post-count">
-{#                            共 {{ num }} 篇文章#}
+                            共 {{ num }} 篇文章
                         </div>
                     </div>
                     <!--for循环模型中的post对象-->
@@ -41,7 +41,7 @@
 
                             <footer class="post-footer clearfix">
                                 <div class="pull-left tag-list">
-                                    <i class="fa fa-folder-open-o"></i>
+                                    <i class="fa fa-folder-open-o"><a href="{{ url_for('main.tag',tag=tag) }}">{{ tag }}</a></i>
                                 </div>
                                 <div class="pull-right share">
                                 </div>
@@ -78,7 +78,7 @@
                         <h4 class="title">标签云</h4>
                         <div class="content tag-cloud">
                             {% for post in tag_list %}
-                                <a href="/tag/{{ post }}">{{ post }}</a>
+                                <a href="/tag/{{ post.title }}">{{ post.title }}</a>
                             {% endfor %}
                         </div>
                     </div>

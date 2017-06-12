@@ -5,12 +5,23 @@ from flask_login import login_required, current_user #登录模块
 from . import main  # 导入蓝图
 from .forms import CommentForm, PostForm  # 表单
 from .. import db #引用orm
-from ..models import Post, Comment #表单
+from ..models import Post, Comment,Tag #表单
 from datetime import datetime
 import os
 
 nowtime = datetime.now().strftime("%Y-%m-%d %H:%M:%S") #当前时间
 basepath = path.abspath(path.join(path.dirname(__file__),pardir,pardir,'upload')) #路径
+
+#全局模板变量,上下文处理器
+@main.app_context_processor
+def tag_list():
+    tags = Tag.query.all()
+    # 过滤没有关联的tag
+    rm_repeat = []
+    for i in tags:
+        if i.posts:
+            rm_repeat.append(i)
+    return dict(tag_list=rm_repeat)
 
 @main.route('/')  # 装饰起用于根目录
 def index():
@@ -27,16 +38,6 @@ def user(user_id):
 def about():
     return render_template('about.html')
 
-#上传文件
-# @main.route('/upload/', methods=['GET', 'POST'])  # 上传文件的http方法
-# def upload():
-#     if request.method == 'POST':
-#         f = request.files['file']  # 这里的的键值file对应upload.html的name="file"
-#         basepath = path.abspath(path.dirname(__file__))  # 返回path规范化的绝对路径
-#         upload_path = path.join(basepath, 'static/')  # 拼接路径
-#         f.save(upload_path + secure_filename(f.filename))  # 检验上传文件并且保存
-#         return redirect(url_for('upload'))  # 指定为postback
-#     return render_template('upload.html')
 
 
 # 自己定义一个错误页面传入错误代码,如果不是蓝图就是用errorhandler
@@ -56,27 +57,41 @@ def edit(id=0):
     if id == 0:
         if form.validate_on_submit():
             #autchor是User模型的backref的参数，autchor存储一个User对象ORM层将会知道怎么完成author_id字段，所以这里只需要传入当前的用户对象。
-            new_post = Post(title=form.title.data,tag=form.tag.data,body=form.body.data,author=current_user, created=nowtime)
+            new_post = Post(
+                title=form.title.data,body=form.body.data,author=current_user, created=nowtime
+            )
+            tag = Tag.query.filter_by(title=form.tag.data).first()#拿到tag对象
+            #判断是否有这个tag没有就新建一个
+            if tag == None:
+                tag = Tag(title=form.tag.data)
+            print(tag,type(tag))
+            new_post.tags = [tag] #关联Tag的标签
             db.session.add(new_post)
             db.session.commit()
             return redirect(url_for('main.posts', id=new_post.id))
     #重新编辑页面
     else:
-        #查询POST模型中的id返回对象
+        #查询POST模型中的id返回模型对象
         post = Post.query.get_or_404(id)
+
         if form.validate_on_submit():
             post.title = form.title.data
             post.body = form.body.data
-            post.tag = form.tag.data
+            #关联标签
+            tag = Tag.query.filter_by(title=form.tag.data).first()
+            if tag == None:
+                tag = Tag(title=form.tag.data)
+            post.tags = [tag]
 
             db.session.add(post)
             db.session.commit()
             return redirect(url_for('main.posts', id=post.id))
 
-        #给前端传入数据库保存的数据(这样就可以在原文的基础上编辑)
+        # 给前端传入数据库保存的数据(这样就可以在原文的基础上编辑)
         form.title.data = post.title
         form.body.data = post.body
-        form.tag.data = post.tag
+        form.tag.data = post.tags[0].title#得到一个tag列表
+        print(post.tags[0], post.tags, type(post.tags))
 
     return render_template('new.html',form=form,title="发表文章")
 
@@ -109,34 +124,20 @@ def blog():
     pagination = query.paginate(page_idnex,per_page=5,error_out=False)#SQLAlchemy的分页方法
     post = pagination.items
 
-    # all_query = Post.query.filter(Post.tag!=None).all()#查询所有不是None的tag数据
-    # tag_list = [i.tag for i in all_query]#所有数据的tag列表
-    # rm_duplication = list(set(tag_list))#去重后的列表
-
     return render_template('blog.html',posts=post,pagination=pagination)
 
 #文章的标签页面
 @main.route('/tag/<tag>',methods=['GET','POST'])
 def tag(tag):
-    tagname = str(tag)#转换URL得到tag变成str
-
     page_idnex = request.args.get("page", 1, type=int)
-    # query = Post.query.order_by(Post.tag.desc())#查询的结果all
-    # pagination = query.paginate(page_idnex,per_page=5,error_out=False)
-    pagination = Post.query.filter_by(author_id=tagname).all().paginate(page, per_page=5, error_out = False)
-    print(type(pagination))
+    tag = Tag.query.filter_by(title=tag).first_or_404()
+    query = tag.posts #backref
+    pagination = query.paginate(page_idnex,per_page=5,error_out=False)
     post = pagination.items
 
-    #num = len(query)#tag个数
-
-    all_query = Post.query.filter(Post.tag!=None).all()#查询所有不是None的tag数据
-    tag_list = [i.tag for i in all_query]#所有数据的tag列表
-    rm_duplication = list(set(tag_list))#去重后的列表
-
-    # if not query:
-    #     abort(404)
-
-    # return render_template('tag.html',posts=post,tagname=tagname,tag_list=rm_duplication,pagination=pagination)
+    search_post = tag.posts.all()
+    count = len(search_post)
+    return render_template('tag.html',num=count,tag=tag,posts=post,pagination=pagination)
 
 
 
@@ -181,16 +182,24 @@ def upload():
                 'success' : 0,
                 'message' : "上传失败"
             }
+            return jsonify(res)
         else:
             ex = path.splitext(file.filename)[1]#把文件名分成文件名称和扩展名，拿到后缀
             filename = datetime.now().strftime('%Y%m%d%H%M%S') + ex
-            file.save(path.join(basepath,filename))
-            res = {
-                'success' : 1,
-                'message' : "上传成功",
-                'url' : url_for('.image',filename = filename)
-            }
-        return jsonify(res)
+            try:
+                file.save(path.join(basepath,filename))
+            except:
+                res = {
+                    'success': 0,
+                    'message': "upload路径出错或者保存不了图片"
+                }
+            else:
+                res = {
+                    'success' : 1,
+                    'mess    age' : "上传成功",
+                    'url' : url_for('.image',filename = filename)
+                }
+            return jsonify(res)
 
 
 

@@ -1,4 +1,4 @@
-from flask import render_template, request, redirect, url_for, make_response, flash, session
+from flask import render_template, request, redirect, url_for, make_response,flash,session
 from . import auth  # 这里用.代表当前包的__init__ #导入蓝图
 from .forms import LoginForm, RegisterForm
 from .. import db  # 引用包最外面的__init__

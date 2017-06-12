@@ -1,3 +1,4 @@
+#功能模块
 from flask import Blueprint
 
 main = Blueprint('main',__name__)

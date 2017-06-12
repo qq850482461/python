@@ -34,7 +34,7 @@
 
                     <footer class="post-footer clearfix">
                         <div class="pull-left tag-list">
-                            <i class="fa fa-folder-open-o"><a href="{{ url_for('main.tag',tag=post.tag) }}">{{ post.tag }}</a></i>
+                            <i class="fa fa-folder-open-o"><a href="{{ url_for('main.tag',tag=post.tags[0]) }}">{{ post.tags[0] }}</a></i>
 
                         </div>
 
@@ -117,25 +117,9 @@
                 <div class="widget">
                     <h4 class="title">标签云</h4>
                     <div class="content tag-cloud">
-                        <a href="/tag/laravel-5-2/">Laravel 5.2</a>
-                        <a href="/tag/spark/">Spark</a>
-                        <a href="/tag/jing-xiang/">镜像</a>
-                        <a href="/tag/xin-ban-ben-fa-bu/">新版本发布</a>
-                        <a href="/tag/lts/">LTS</a>
-                        <a href="/tag/wei-kuang-jia/">微框架</a>
-                        <a href="/tag/lumen/">Lumen</a>
-                        <a href="/tag/ming-ming-kong-jian/">命名空间</a>
-                        <a href="/tag/laravel4/">Laravel4</a>
-                        <a href="/tag/whoops/">Whoops</a>
-                        <a href="/tag/event/">Event</a>
-                        <a href="/tag/sheng-ji/">升级</a>
-                        <a href="/tag/laravle5/">laravle5</a>
-                        <a href="/tag/error-page/">错误页</a>
-                        <a href="/tag/laravel-5/">Laravel 5</a>
-                        <a href="/tag/artisan/">Artisan</a>
-                        <a href="/tag/laravel-5-1/">Laravel 5.1</a>
-                        <a href="/tag/lravel/">Lravel</a>
-                        <a href="/tag-cloud/">...</a>
+                        {% for tag in tag_list %}
+                            <a href="tag/{{ tag.title }}">{{ tag.title }}</a>
+                        {% endfor %}
                     </div>
                 </div>
                 <!-- end tag cloud widget -->
