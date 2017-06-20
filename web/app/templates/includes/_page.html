@@ -1,0 +1,23 @@
+{% macro pagination_widget(pagination, endpoint) %}
+    <ul class="pagination">
+        {% if not pagination.has_prev %}
+            <li class="disabled"><a href="#"> « </a></li>
+        {% else %}
+            <li><a href="{{ url_for(endpoint,page=pagination.prev_num,search=request.args.get('search'),**kwargs) }}"> « </a></li>
+        {% endif %}
+        {% for p in pagination.iter_pages() %}
+            {% if p %}
+                {% if p == pagination.page %}
+                <li class="active"><a href="{{ url_for(endpoint,page=p,search=request.args.get('search'),**kwargs) }}">{{ p }}</a></li>
+                {% else %}
+                <li><a href="{{ url_for(endpoint,page=p,search=request.args.get('search'),**kwargs) }}">{{ p }}</a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if not pagination.has_next %}
+            <li class="disabled"><a href="#"> » </a></li>
+        {% else %}
+            <li><a href="{{ url_for(endpoint,page=pagination.prev_next,search=request.args.get('search'),**kwargs) }}"> » </a></li>
+        {% endif %}
+    </ul>
+{% endmacro %}

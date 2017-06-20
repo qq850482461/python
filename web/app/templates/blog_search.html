@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {# 导入render_pagination的宏 #}
-{% from "bootstrap/pagination.html" import render_pagination %}
 {% from "includes/_page.html" import pagination_widget %}
 
 {% block content %}
@@ -8,6 +7,13 @@
     <div class="container">
         <div class="row">
             <main class="col-md-8 main-content">
+                {% if num %}
+                <div class="cover tag-cover">
+                    <h3 class="tag-name">
+                        搜索得到：{{num}} 篇文章
+                    </h3>
+                </div>
+                {% endif %}
                 <!--for循环模型中的post对象-->
                 {% for post in posts %}
                 <article id="83" class="post tag-about-ghost tag-release">
@@ -49,7 +55,7 @@
 
                 {% if pagination %}
                 <div style="text-align:center">
-                    {{ render_pagination(pagination) }}
+                    {{ pagination_widget(pagination,'main.blog') }}
                 </div>
                 {% endif %}
 

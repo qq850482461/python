@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,SubmitField,TextAreaField
-from wtforms.validators import DataRequired,Length
+from wtforms import StringField,SubmitField,TextAreaField #表单类型
+from wtforms.validators import DataRequired,Length #表单验证器
 
 class PostForm(FlaskForm):
     title = StringField(label="标题",validators=[DataRequired()])
@@ -11,3 +11,4 @@ class PostForm(FlaskForm):
 class CommentForm(FlaskForm):
     body = TextAreaField(label='评论',validators=[DataRequired()])
     submit = SubmitField(label='发表')
+
