@@ -118,6 +118,7 @@ def posts(id):
 def blog():
     search = request.args.get('search')
     page_idnex = request.args.get("page", 1, type=int)  #获取url中get请求的参数
+    #搜索功能
     if search:
         value = "%{0}%".format(search)
         query = Post.query.filter(Post.title.like(value))
@@ -152,11 +153,20 @@ def tag(tag):
 @main.route('/bloglists', methods=['GET', 'POST'])
 @login_required
 def bloglists():
+    search = request.args.get("search")
     page_idnex = request.args.get("page", 1, type=int)
-    query = Post.query.order_by(Post.created.desc())  # 先升序再降序
-    pagination = query.paginate(page_idnex, per_page=10, error_out=False)
-    post = pagination.items
-    return render_template('bloglists.html', posts=post, pagination=pagination)
+
+    if search:
+        value = "%{0}%".format(search)
+        query = Post.query.filter(Post.title.like(value))
+        pagination = query.paginate(page_idnex, per_page=5, error_out=False)
+        post = pagination.items
+        return render_template('bloglists.html', posts=post, pagination=pagination)
+    else:
+        query = Post.query.order_by(Post.created.desc())  # 先升序再降序
+        pagination = query.paginate(page_idnex, per_page=10, error_out=False)
+        post = pagination.items
+        return render_template('bloglists.html', posts=post, pagination=pagination)
 
 
 # 实现文章删除功能

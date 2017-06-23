@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% from "bootstrap/pagination.html" import render_pagination %}
+{% from "includes/_page.html" import pagination_widget %}
 {% block head %}
     {{ super() }}
     <!--引用jq-->
@@ -29,6 +29,17 @@
 
 {% block content %}
     <div class="container">
+        <div class="pull-right">
+            <form class="navbar-form navbar-left" role="search" action="{{ url_for('main.bloglists') }}" method="get">
+                <div class="input-group">
+                    <input type="text" name='search' class="form-control">
+                    <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"
+                                                                     aria-hidden="true"></i></button>
+                </span>
+                </div>
+            </form>
+        </div>
         <div>
             <table class="table table-striped table-hover ">
                 <thead>
@@ -55,7 +66,7 @@
                                 删除
                             </button>
                             <!-- 模态框（Modal） -->
-                            <div class="modal fade" id="{{post.id}}" tabindex="-1" role="dialog"
+                            <div class="modal fade" id="{{ post.id }}" tabindex="-1" role="dialog"
                                  aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -88,11 +99,9 @@
                 {% endfor %}
                 </tbody>
             </table>
-            {% if pagination %}
-                <div class="container" style="text-align:center">
-                    {{ render_pagination(pagination) }}
-                </div>
-            {% endif %}
+        </div>
+        <div class="pull-right" style="text-align:center">
+            {{ pagination_widget(pagination,'main.bloglists') }}
         </div>
     </div>
 {% endblock content %}
