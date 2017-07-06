@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,SubmitField,TextAreaField #表单类型
+from wtforms import StringField,SubmitField,TextAreaField,SelectMultipleField #表单类型
 from wtforms.validators import DataRequired,Length #表单验证器
 
 class PostForm(FlaskForm):

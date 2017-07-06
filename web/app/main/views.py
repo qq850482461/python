@@ -191,6 +191,31 @@ def post_delete(id):
         db.session.commit()
         return jsonify(response)
 
+# API接口测试
+@main.route('/test/api', methods=["GET"])
+def test():
+    post_name = request.args.get("post_name")
+    value = "%{0}%".format(post_name)
+    post = Post.query.filter(Post.title.like(value)).all()
+    str_name = []
+    for i in post:
+        str_name.append(i.title)
+    print(str_name)
+    res = {
+        "resultcode":200,
+        "message":"Search successd"
+    }
+    if post :
+        res["result"] = str_name
+        return jsonify(res)
+    else:
+        res["resultcode"] = 404
+        res["message"] = "Search error"
+        res["result"] = None
+        return jsonify(res)
+
+
+
 
 # 编辑器上传图片
 @main.route('/upload/', methods=["POST"])
@@ -220,6 +245,7 @@ def upload():
                     'url': url_for('.image', filename=filename)
                 }
             return jsonify(res)
+
 
 
 # 上传文件访问服务
