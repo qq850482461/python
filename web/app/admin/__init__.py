@@ -1,4 +1,4 @@
-from flask import url_for
+from flask import url_for,redirect,abort
 from flask_admin import BaseView, expose, AdminIndexView
 from flask_login import login_required, current_user
 from flask_admin.contrib.sqla import ModelView #数据库模型
@@ -37,6 +37,15 @@ class MyView(BaseView):
 
 # 模型视图
 class MyUserModel(ModelView):
+
+    #重写判断是否登录,登录会返回True
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+    #如果is_accessible是False没有登录就会执行下面代码
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for("auth.login"))
+
     # 重写标签字典
     column_labels = {
         "id": "ID",
@@ -52,6 +61,13 @@ class MyUserModel(ModelView):
 
 
 class MyPostModel(ModelView):
+
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for("auth.login"))
+
     column_labels = {
         "id": "ID",
         "title": "标题",
@@ -68,6 +84,13 @@ class MyPostModel(ModelView):
 
 
 class MyCommentModel(ModelView):
+
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for("auth.login"))
+
     column_labels = {
         "id": "ID",
         "body": "评论",
@@ -77,6 +100,25 @@ class MyCommentModel(ModelView):
     column_list = ("id", "body", "created")
     column_searchable_list = ('body', 'id')
 
+class MyTagModel(ModelView):
+
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for("auth.login"))
+
+    column_labels = {
+        "id": "ID",
+        "title":"标签"
+    }
+    column_list = ("id","title")
+    column_searchable_list = ("id","title")
 
 class MyFile(FileAdmin):
-    pass
+
+    def is_accessible(self):
+        return current_user.is_authenticated
+
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for("auth.login"))

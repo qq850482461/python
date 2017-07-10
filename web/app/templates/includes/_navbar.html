@@ -27,7 +27,7 @@
             </form>
         {% endif %}
 
-        <!--###判断条件中的变量current_user由Flask-Login定义，且在视图函数和模板中自动调用。is_authenticated在python3是没有()括号-->
+        <!--###判断条件中的变量current_user由Flask-Login定义，且在视图函数和模板中自动调用。is_authenticated单独调用是不需要()括号-->
         <div>
             <ul class="nav navbar-nav navbar-right">
                 {# 如果用户已经登录 #}
@@ -41,6 +41,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="{{ url_for('main.edit') }}">发表博客</a></li>
                             <li><a href="{{ url_for('main.bloglists') }}">管理博客</a></li>
+                            <li><a href="{{ url_for('admin.index') }}">admin后台</a></li>
                         </ul>
                     </li>
 

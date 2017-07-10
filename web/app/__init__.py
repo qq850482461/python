@@ -7,7 +7,7 @@ from flask_moment import Moment#时钟实时刷新
 
 from flask_admin import Admin,AdminIndexView#flask-admin
 from flask_admin.contrib.sqla import ModelView #admin的模型视图
-from .admin import MyView, MyHomeView, MyUserModel, MyPostModel, MyCommentModel, MyFile, basepath  # 引用自己写的
+from .admin import MyView, MyHomeView, MyUserModel, MyPostModel, MyCommentModel, MyFile, basepath ,MyTagModel # 引用自己写的admin
 
 from flask_babelex import Babel #flask-admin 中文化
 
@@ -46,14 +46,15 @@ def create_app():
     bootstrap.init_app(app)
     login_manager.init_app(app)
     moment.init_app(app)
-    #flask_admin.init_app(app)
-    #flask_admin.add_view(MyView(name="统计？"))#如果加了endpoit就会覆盖类名小写的myview的url路由
+    flask_admin.init_app(app)
+    flask_admin.add_view(MyView(name="统计？"))#如果加了endpoit就会覆盖类名小写的myview的url路由
 
-    #from .models import User,Post,Comment#引入写在方法内部避免交叉引用
-    # flask_admin.add_view(MyUserModel(User,db.session,category="数据模型",name="用户"))
-    # flask_admin.add_view(MyPostModel(Post,db.session, category="数据模型",name="文章"))
-    # flask_admin.add_view(MyCommentModel(Comment,db.session,category="数据模型",name="评论"))
-    # flask_admin.add_view(MyFile(basepath,name='图片管理',endpoint='image'))
+    from .models import User,Post,Comment,Tag#引入写在方法内部避免交叉引用
+    flask_admin.add_view(MyUserModel(User,db.session,category="数据模型",name="用户"))
+    flask_admin.add_view(MyPostModel(Post,db.session, category="数据模型",name="文章"))
+    flask_admin.add_view(MyCommentModel(Comment,db.session,category="数据模型",name="评论"))
+    flask_admin.add_view(MyTagModel(Tag,db.session,category="数据模型",name="标签"))
+    flask_admin.add_view(MyFile(basepath,name='图片管理',endpoint='image'))
 
     babel.init_app(app)
 

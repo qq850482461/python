@@ -6,6 +6,7 @@ from markdown import markdown
 import bleach#清理html标签
 
 
+
 #多对多关系中的两个表之间的一个关联表
 tags = db.Table('post_tags',
     db.Column('post_id',db.Integer,db.ForeignKey('posts.id')),
@@ -42,7 +43,7 @@ class Post(db.Model):
     title = db.Column(db.String(255))
     body = db.Column(db.Text())
     body_html = db.Column(db.Text())
-    created = db.Column(db.DateTime)
+    created = db.Column(db.DateTime,default=datetime.utcnow)
 
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     comments = db.relationship('Comment', backref='post',lazy='dynamic')  # 关联评论
@@ -98,7 +99,7 @@ class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.Text())
-    created = db.Column(db.DateTime)
+    created = db.Column(db.DateTime,default=datetime.utcnow)
 
     post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
 

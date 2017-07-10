@@ -58,7 +58,7 @@ def edit(id=0):
         if form.validate_on_submit():
             # autchor是User模型的backref的参数，autchor存储一个User对象ORM层将会知道怎么完成author_id字段，所以这里只需要传入当前的用户对象。
             new_post = Post(
-                title=form.title.data, body=form.body.data, author=current_user, created=nowtime
+                title=form.title.data, body=form.body.data, author=current_user
             )
             tag = Tag.query.filter_by(title=form.tag.data).first()  # 拿到tag对象
             # 判断是否有这个tag没有就新建一个
@@ -104,13 +104,13 @@ def posts(id):
     # 提交评论表单
     if form.validate_on_submit():
         # 这里的post=post是关联文章的Post数据库模型的backref的post对象==当前文章的变量post存放的文章id对象
-        comment = Comment(body=form.body.data, post=post, created=nowtime)
+        comment = Comment(body=form.body.data, post=post)
         db.session.add(comment)
         db.session.commit()
         return redirect(url_for('main.posts', id=post.id))
 
     # form对象传到前端模版，post对象传到前端模版(前端使用的变量名字 = views中定义的对象)
-    return render_template('post.html', form=form, post=post, time=nowtime)
+    return render_template('post.html', form=form, post=post)
 
 
 # 显示博客文章列表页面
@@ -220,6 +220,9 @@ def test():
 # 编辑器上传图片
 @main.route('/upload/', methods=["POST"])
 def upload():
+    check_path = path.isdir(basepath)
+    if check_path is False:
+        pass
     if request.method == "POST":
         file = request.files.get("editormd-image-file")  # 拿到前端编辑器上传name标签
         if not file:
