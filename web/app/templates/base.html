@@ -9,13 +9,13 @@
 {% block styles %}
     {{ super() }}
     <!--重写styles样式更换主题http://bootswatch.com/-->
-    <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" type="text/css">
     <!--动画闪烁CSS-->
-    <link rel="stylesheet" type="text/css" href="/static/css/anicollection.css">
+    <link href="/static/css/anicollection.css" rel="stylesheet" type="text/css">
     <!--博客的CSS-->
-    <link rel="stylesheet" type="text/css" href="/static/css/post.css"/>
+    <link href="/static/css/post.css" rel="stylesheet" type="text/css">
     <!--小图标CSS-->
-    <link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+    <link href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 {% endblock styles %}
 
 {% block navbar %}
